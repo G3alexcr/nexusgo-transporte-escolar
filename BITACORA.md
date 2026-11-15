@@ -4,6 +4,15 @@
 
 ---
 
+### [2026-11-15 17:30] — ☰ Menú Sándwich Móvil en Sidebars y Barra Inferior Centrada
+- **Menú Sándwich (`≡`) y Drawer Móvil (`role-sidebar.tsx`, `admin-shell.tsx`, `apoderado.tsx`, `chofer.tsx`):**
+  - Se agregó `MobileMenuButton` y drawer lateral deslizante oscuro (`bg-slate-950`) para **Familias**, **Chofer** y **Admin** en pantallas móviles/tablet.
+- **Barra Inferior Móvil Centrada (`apoderado.tsx`, `chofer.tsx`):**
+  - Se reemplazó `flex justify-around` por `grid-cols-5` (Familias: `En Vivo`, `Avisos`, `Pagos`, `Novedades`, `Perfil`) y `grid-cols-4` (Chofer: `Ruta`, `Rutas`, `Avisos`, `Perfil`) para alinear correctamente la última pestaña (`Perfil`).
+- **Verificación y Despliegue:** `npm.cmd test` (**2 archivos, 33/33 pruebas aprobadas**) y despliegue en **Vercel** (`https://nexus-go-cr.vercel.app`).
+
+---
+
 ### [2026-11-15 17:21] — 🎨 Sidebars Oscuros (`bg-slate-950`) para Admin, Familias y Chofer + Botón "Instalar App" PWA
 - **Botón Profesional "Instalar App" (`install-app-button.tsx`):**
   - Se creó `InstallAppButton` (versión completa para sidebar y compacta en móvil) que intercepta `beforeinstallprompt` para lanzar el instalador nativo en Chrome/Edge/Android, muestra guía de 2 pasos para Safari/iOS y detecta modo `standalone`.

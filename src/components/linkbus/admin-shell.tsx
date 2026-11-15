@@ -1,5 +1,5 @@
 import { Link, useLocation } from "@tanstack/react-router";
-import { ArrowLeftRight, Bus, ChevronRight, CreditCard, History, Map, Route, School, Settings, Users, UserCog, Building2, GraduationCap } from "lucide-react";
+import { ArrowLeftRight, Bus, ChevronRight, CreditCard, History, Map, Route, School, Settings, Users, UserCog, Building2, GraduationCap, X } from "lucide-react";
 import { useState, type ReactNode } from "react";
 import { toast } from "sonner";
 import { Button } from "@/components/ui/button";
@@ -7,6 +7,7 @@ import { Dialog, DialogContent, DialogDescription, DialogTitle } from "@/compone
 import { TopBar } from "./shared";
 import { usePlatform } from "./platform-provider";
 import { InstallAppButton } from "./install-app-button";
+import { MobileMenuButton } from "./role-sidebar";
 
 export const adminNavigation = [
   { to: "/admin/dashboard", label: "Mapa en vivo", icon: Map },
@@ -23,72 +24,99 @@ export const adminNavigation = [
 export function AdminShell({ children }: { children: ReactNode }) {
   const { pathname } = useLocation();
   const { state } = usePlatform();
+  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const activeTenant = state.tenants.find((t) => t.id === state.currentTenantId);
+
+  const renderSidebarContent = (onSelect?: () => void) => (
+    <>
+      <div className="flex flex-col items-center gap-2.5 border-b border-white/10 pb-4 text-center">
+        {activeTenant?.logoUrl ? (
+          <div className="w-full overflow-hidden rounded-2xl border border-white/15 bg-white/5 shadow-sm">
+            <img
+              src={activeTenant.logoUrl}
+              alt={state.company}
+              className="block h-auto w-full"
+            />
+          </div>
+        ) : (
+          <span className="grid h-14 w-14 place-items-center rounded-2xl bg-amber-400 text-slate-950 shadow-sm">
+            <Bus className="h-7 w-7" />
+          </span>
+        )}
+        <div className="min-w-0 w-full">
+          <p className="break-words text-sm font-extrabold uppercase tracking-tight leading-snug text-white" title={state.company}>
+            {state.company}
+          </p>
+          <span className="mt-1 inline-block rounded-full border border-white/15 bg-white/10 px-2.5 py-0.5 text-[10px] font-bold uppercase tracking-wider text-amber-300">
+            Flota afiliada
+          </span>
+        </div>
+      </div>
+      {state.isSuperAdmin && (
+        <Link
+          to="/superadmin"
+          onClick={onSelect}
+          className="mt-3 flex items-center justify-between rounded-xl border border-amber-400/30 bg-amber-400/10 px-3 py-2 text-xs font-bold text-amber-300 hover:bg-amber-400/20 transition-colors"
+        >
+          <span className="flex items-center gap-1.5"><Building2 className="h-3.5 w-3.5" /> Centro de Mando</span>
+          <span>&rarr;</span>
+        </Link>
+      )}
+      <p className="mb-2 mt-5 px-3 text-[10px] font-bold uppercase tracking-widest text-slate-400">OPERACIONES</p>
+      <nav className="flex-1 flex flex-col gap-1 overflow-y-auto pr-0.5">
+        {adminNavigation.map((n) => (
+          <Link
+            key={n.to}
+            to={n.to}
+            onClick={onSelect}
+            className={`w-full flex items-center justify-between gap-2 rounded-xl px-3 py-2.5 text-xs font-bold transition-all ${
+              pathname === n.to
+                ? "bg-amber-400 text-slate-950 shadow-sm font-extrabold"
+                : "text-slate-300 hover:bg-white/10 hover:text-white"
+            }`}
+          >
+            <span className="flex items-center gap-2.5 min-w-0">
+              <n.icon className={`h-4 w-4 shrink-0 ${pathname === n.to ? "text-slate-950" : "text-slate-400"}`} />
+              <span className="truncate">{n.label}</span>
+            </span>
+            {pathname === n.to && <ChevronRight className="h-3.5 w-3.5 shrink-0 text-slate-950" />}
+          </Link>
+        ))}
+      </nav>
+      <div className="mt-auto space-y-3 border-t border-white/10 pt-3">
+        <InstallAppButton />
+        <div className="px-1">
+          <p className="text-xs font-bold text-white">Carolina Morales</p>
+          <p className="text-[11px] text-slate-400">Administradora · Tenant Activo</p>
+        </div>
+      </div>
+    </>
+  );
+
   return (
     <div className="min-h-screen">
       <TopBar />
       <div className="mx-auto flex max-w-[1600px]">
         <aside className="sticky top-[56px] hidden h-[calc(100vh-56px)] w-64 shrink-0 flex-col border-r border-white/10 bg-slate-950 px-4 py-5 text-white md:flex">
-          <div className="flex flex-col items-center gap-2.5 border-b border-white/10 pb-4 text-center">
-            {activeTenant?.logoUrl ? (
-              <div className="w-full overflow-hidden rounded-2xl border border-white/15 bg-white/5 shadow-sm">
-                <img
-                  src={activeTenant.logoUrl}
-                  alt={state.company}
-                  className="block h-auto w-full"
-                />
-              </div>
-            ) : (
-              <span className="grid h-14 w-14 place-items-center rounded-2xl bg-amber-400 text-slate-950 shadow-sm">
-                <Bus className="h-7 w-7" />
-              </span>
-            )}
-            <div className="min-w-0 w-full">
-              <p className="break-words text-sm font-extrabold uppercase tracking-tight leading-snug text-white" title={state.company}>
-                {state.company}
-              </p>
-              <span className="mt-1 inline-block rounded-full border border-white/15 bg-white/10 px-2.5 py-0.5 text-[10px] font-bold uppercase tracking-wider text-amber-300">
-                Flota afiliada
-              </span>
-            </div>
-          </div>
-          {state.isSuperAdmin && (
-            <Link
-              to="/superadmin"
-              className="mt-3 flex items-center justify-between rounded-xl border border-amber-400/30 bg-amber-400/10 px-3 py-2 text-xs font-bold text-amber-300 hover:bg-amber-400/20 transition-colors"
-            >
-              <span className="flex items-center gap-1.5"><Building2 className="h-3.5 w-3.5" /> Centro de Mando</span>
-              <span>&rarr;</span>
-            </Link>
-          )}
-          <p className="mb-2 mt-5 px-3 text-[10px] font-bold uppercase tracking-widest text-slate-400">OPERACIONES</p>
-          <nav className="flex-1 flex flex-col gap-1 overflow-y-auto pr-0.5">
-            {adminNavigation.map((n) => (
-              <Link
-                key={n.to}
-                to={n.to}
-                className={`w-full flex items-center justify-between gap-2 rounded-xl px-3 py-2.5 text-xs font-bold transition-all ${
-                  pathname === n.to
-                    ? "bg-amber-400 text-slate-950 shadow-sm font-extrabold"
-                    : "text-slate-300 hover:bg-white/10 hover:text-white"
-                }`}
-              >
-                <span className="flex items-center gap-2.5 min-w-0">
-                  <n.icon className={`h-4 w-4 shrink-0 ${pathname === n.to ? "text-slate-950" : "text-slate-400"}`} />
-                  <span className="truncate">{n.label}</span>
-                </span>
-                {pathname === n.to && <ChevronRight className="h-3.5 w-3.5 shrink-0 text-slate-950" />}
-              </Link>
-            ))}
-          </nav>
-          <div className="mt-auto space-y-3 border-t border-white/10 pt-3">
-            <InstallAppButton />
-            <div className="px-1">
-              <p className="text-xs font-bold text-white">Carolina Morales</p>
-              <p className="text-[11px] text-slate-400">Administradora · Tenant Activo</p>
-            </div>
-          </div>
+          {renderSidebarContent()}
         </aside>
+
+        {mobileMenuOpen && (
+          <div className="fixed inset-0 z-50 flex md:hidden">
+            <div className="fixed inset-0 bg-black/60 backdrop-blur-[1px]" onClick={() => setMobileMenuOpen(false)} />
+            <aside className="relative z-10 flex h-full w-72 max-w-[82vw] flex-col border-r border-white/10 bg-slate-950 px-4 py-5 text-white shadow-2xl">
+              <button
+                type="button"
+                onClick={() => setMobileMenuOpen(false)}
+                className="absolute right-3 top-3 rounded-lg p-1.5 text-slate-400 hover:bg-white/10 hover:text-white cursor-pointer"
+                aria-label="Cerrar menú"
+              >
+                <X className="h-4 w-4" />
+              </button>
+              {renderSidebarContent(() => setMobileMenuOpen(false))}
+            </aside>
+          </div>
+        )}
         <main className="min-w-0 flex-1 p-4 sm:p-6 lg:p-8">
           {/* Active Tenant Context Banner (Only for SuperAdmin) */}
           {state.isSuperAdmin && (
@@ -107,7 +135,8 @@ export function AdminShell({ children }: { children: ReactNode }) {
               </Link>
             </div>
           )}
-          <div className="mb-3 flex items-center gap-3 rounded-2xl border bg-card p-3 shadow-xs md:hidden">
+          <div className="mb-3 flex items-center gap-2.5 rounded-2xl border bg-card p-3 shadow-xs md:hidden">
+            <MobileMenuButton onClick={() => setMobileMenuOpen(true)} />
             {activeTenant?.logoUrl ? (
               <div className="w-16 shrink-0 overflow-hidden rounded-xl border border-slate-200/80 shadow-xs">
                 <img

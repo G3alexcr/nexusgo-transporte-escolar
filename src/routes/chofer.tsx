@@ -29,7 +29,7 @@ import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/u
 import { DriverQrScannerModal } from '@/components/linkbus/qr-checkin';
 import { NotificationBellButton, NotificationModal } from '@/components/linkbus/notification-center';
 import { TopBar, Badge } from '@/components/linkbus/shared';
-import { RoleSidebar } from '@/components/linkbus/role-sidebar';
+import { MobileMenuButton, RoleSidebar } from '@/components/linkbus/role-sidebar';
 import { InstallAppButton } from '@/components/linkbus/install-app-button';
 import { AuthGuard } from '@/components/linkbus/auth-guard';
 import { FleetMap } from '@/components/linkbus/fleet-map';
@@ -70,6 +70,7 @@ function Driver() {
   const [qrScannerOpen, setQrScannerOpen] = useState(false);
   const [notifOpen, setNotifOpen] = useState(false);
   const [driverSelectOpen, setDriverSelectOpen] = useState(false);
+  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [preOpModalOpen, setPreOpModalOpen] = useState(false);
   const [preOpViewerOpen, setPreOpViewerOpen] = useState(false);
   const [manifiestoOpen, setManifiestoOpen] = useState(false);
@@ -156,10 +157,10 @@ function Driver() {
   };
 
   const navItems = [
-    { key: 'inicio', label: 'Ruta & Asistencia', icon: Home },
-    { key: 'rutas', label: 'Rutas Asignadas', icon: RouteIcon },
-    { key: 'avisos', label: 'Avisos Rápidos', icon: Bell, count: state.notices.length },
-    { key: 'perfil', label: 'Perfil Conductor', icon: UserRound },
+    { key: 'inicio', label: 'Ruta & Asistencia', shortLabel: 'Ruta', icon: Home },
+    { key: 'rutas', label: 'Rutas Asignadas', shortLabel: 'Rutas', icon: RouteIcon },
+    { key: 'avisos', label: 'Avisos Rápidos', shortLabel: 'Avisos', icon: Bell, count: state.notices.length },
+    { key: 'perfil', label: 'Perfil Conductor', shortLabel: 'Perfil', icon: UserRound },
   ] as const;
 
   return (
@@ -177,6 +178,8 @@ function Driver() {
           onSelect={(k) => setTab(k as typeof tab)}
           userName={activeDriver?.nombre || 'Conductor'}
           userSubtitle={`Buseta ${van?.patente || '—'}`}
+          mobileOpen={mobileMenuOpen}
+          onMobileClose={() => setMobileMenuOpen(false)}
         />
 
       <main className="min-w-0 flex-1 px-3 sm:px-6 lg:px-8 py-5">
@@ -184,6 +187,7 @@ function Driver() {
         <div className="mb-5 flex flex-col md:flex-row md:items-center justify-between gap-4 border-b pb-5">
           <div>
             <div className="flex items-center gap-2">
+              <MobileMenuButton onClick={() => setMobileMenuOpen(true)} className="lg:hidden" />
               {state.tenants.find((t) => t.id === state.currentTenantId)?.logoUrl && (
                 <img
                   src={state.tenants.find((t) => t.id === state.currentTenantId)?.logoUrl}
@@ -631,7 +635,7 @@ function Driver() {
       </div>
 
       {/* Mobile Sticky Bottom Nav Bar (visible on small screens) */}
-      <nav className="lg:hidden fixed bottom-0 left-0 right-0 z-30 flex items-center justify-around border-t bg-card/95 backdrop-blur-md px-1 py-2 shadow-lg">
+      <nav className="lg:hidden fixed bottom-0 left-0 right-0 z-30 grid grid-cols-4 border-t bg-card/95 backdrop-blur-md px-1 py-2 shadow-lg">
         {navItems.map((item) => {
           const active = tab === item.key;
           const Icon = item.icon;
@@ -640,14 +644,14 @@ function Driver() {
               key={item.key}
               type="button"
               onClick={() => setTab(item.key as typeof tab)}
-              className={`flex flex-col items-center gap-0.5 px-2 py-1 text-[10px] font-bold transition-all cursor-pointer ${
+              className={`flex min-w-0 w-full flex-col items-center justify-center gap-0.5 px-0.5 py-1 text-[10px] font-bold transition-all cursor-pointer ${
                 active ? 'text-amber-500' : 'text-muted-foreground hover:text-foreground'
               }`}
             >
               <div className={`grid h-7 w-10 place-items-center rounded-full transition-all ${active ? 'bg-amber-400 text-slate-950 font-bold' : ''}`}>
                 <Icon className="h-4 w-4" />
               </div>
-              <span className="truncate max-w-[64px]">{item.label.split(' ')[0]}</span>
+              <span className="w-full truncate text-center">{item.shortLabel}</span>
             </button>
           );
         })}

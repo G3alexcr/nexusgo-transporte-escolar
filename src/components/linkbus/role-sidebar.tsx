@@ -1,5 +1,5 @@
 import type { ComponentType } from "react";
-import { Bus, ChevronRight } from "lucide-react";
+import { Bus, ChevronRight, Menu, X } from "lucide-react";
 import { InstallAppButton } from "./install-app-button";
 
 export interface RoleSidebarItem {
@@ -7,6 +7,20 @@ export interface RoleSidebarItem {
   label: string;
   icon: ComponentType<{ className?: string }>;
   count?: number;
+}
+
+export function MobileMenuButton({ onClick, className = "" }: { onClick: () => void; className?: string }) {
+  return (
+    <button
+      type="button"
+      onClick={onClick}
+      className={`inline-flex h-9 w-9 shrink-0 items-center justify-center rounded-xl border border-border bg-card text-foreground shadow-xs hover:bg-muted transition-colors cursor-pointer ${className}`}
+      aria-label="Abrir menú"
+      title="Abrir menú"
+    >
+      <Menu className="h-5 w-5" />
+    </button>
+  );
 }
 
 export function RoleSidebar({
@@ -19,6 +33,8 @@ export function RoleSidebar({
   onSelect,
   userName,
   userSubtitle,
+  mobileOpen = false,
+  onMobileClose,
 }: {
   company: string;
   logoUrl?: string;
@@ -29,9 +45,11 @@ export function RoleSidebar({
   onSelect: (key: string) => void;
   userName: string;
   userSubtitle: string;
+  mobileOpen?: boolean;
+  onMobileClose?: () => void;
 }) {
-  return (
-    <aside className="sticky top-[56px] hidden h-[calc(100vh-56px)] w-64 shrink-0 flex-col border-r border-white/10 bg-slate-950 px-4 py-5 text-white lg:flex">
+  const renderContent = (afterSelect?: () => void) => (
+    <>
       {/* Carrier Logo & Identity */}
       <div className="flex flex-col items-center gap-2.5 border-b border-white/10 pb-4 text-center">
         {logoUrl ? (
@@ -65,7 +83,10 @@ export function RoleSidebar({
             <button
               key={item.key}
               type="button"
-              onClick={() => onSelect(item.key)}
+              onClick={() => {
+                onSelect(item.key);
+                afterSelect?.();
+              }}
               className={`w-full flex items-center justify-between gap-2 rounded-xl px-3 py-2.5 text-xs font-bold transition-all cursor-pointer ${
                 active
                   ? "bg-amber-400 text-slate-950 shadow-sm font-extrabold"
@@ -100,6 +121,31 @@ export function RoleSidebar({
           <p className="truncate text-[11px] text-slate-400">{userSubtitle}</p>
         </div>
       </div>
-    </aside>
+    </>
+  );
+
+  return (
+    <>
+      <aside className="sticky top-[56px] hidden h-[calc(100vh-56px)] w-64 shrink-0 flex-col border-r border-white/10 bg-slate-950 px-4 py-5 text-white lg:flex">
+        {renderContent()}
+      </aside>
+
+      {mobileOpen && (
+        <div className="fixed inset-0 z-50 flex lg:hidden">
+          <div className="fixed inset-0 bg-black/60 backdrop-blur-[1px]" onClick={onMobileClose} />
+          <aside className="relative z-10 flex h-full w-72 max-w-[82vw] flex-col border-r border-white/10 bg-slate-950 px-4 py-5 text-white shadow-2xl">
+            <button
+              type="button"
+              onClick={onMobileClose}
+              className="absolute right-3 top-3 rounded-lg p-1.5 text-slate-400 hover:bg-white/10 hover:text-white cursor-pointer"
+              aria-label="Cerrar menú"
+            >
+              <X className="h-4 w-4" />
+            </button>
+            {renderContent(onMobileClose)}
+          </aside>
+        </div>
+      )}
+    </>
   );
 }

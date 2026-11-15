@@ -37,7 +37,7 @@ import { LiveEtaWidget } from '@/components/linkbus/live-eta';
 import { ReportarSinpeModal, SinpeComprobanteModal } from '@/components/linkbus/sinpe-modal';
 import { ContratoTransporteModal } from '@/components/linkbus/contrato-modal';
 import { TopBar, Badge } from '@/components/linkbus/shared';
-import { RoleSidebar } from '@/components/linkbus/role-sidebar';
+import { MobileMenuButton, RoleSidebar } from '@/components/linkbus/role-sidebar';
 import { InstallAppButton } from '@/components/linkbus/install-app-button';
 import { AuthGuard } from '@/components/linkbus/auth-guard';
 import { FleetMap } from '@/components/linkbus/fleet-map';
@@ -80,6 +80,7 @@ function Parent() {
   const [viewSinpeOpen, setViewSinpeOpen] = useState(false);
   const [contratoOpen, setContratoOpen] = useState(false);
   const [studentSelectOpen, setStudentSelectOpen] = useState(false);
+  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [date, setDate] = useState<Date | undefined>(new Date(2026, 9, 18));
   const [mode, setMode] = useState<AbsenceMode>('No va hoy');
 
@@ -107,11 +108,11 @@ function Parent() {
       : 'Buseta en camino';
 
   const navItems = [
-    { key: 'mapa', label: 'Seguimiento en Vivo', icon: Map },
-    { key: 'ausencias', label: 'Inasistencias & Avisos', icon: CalendarX },
-    { key: 'pagos', label: 'Mensualidades & Recibos', icon: CreditCard },
-    { key: 'noticias', label: 'Novedades', icon: Bell, count: state.notices.length },
-    { key: 'perfil', label: 'Perfil de Familia', icon: User },
+    { key: 'mapa', label: 'Seguimiento en Vivo', shortLabel: 'En Vivo', icon: Map },
+    { key: 'ausencias', label: 'Inasistencias & Avisos', shortLabel: 'Avisos', icon: CalendarX },
+    { key: 'pagos', label: 'Mensualidades & Recibos', shortLabel: 'Pagos', icon: CreditCard },
+    { key: 'noticias', label: 'Novedades', shortLabel: 'Novedades', icon: Bell, count: state.notices.length },
+    { key: 'perfil', label: 'Perfil de Familia', shortLabel: 'Perfil', icon: User },
   ] as const;
 
   return (
@@ -129,6 +130,8 @@ function Parent() {
           onSelect={(k) => setTab(k as typeof tab)}
           userName={activeParent}
           userSubtitle={`Estudiante: ${child.nombre.split(' ')[0]}`}
+          mobileOpen={mobileMenuOpen}
+          onMobileClose={() => setMobileMenuOpen(false)}
         />
 
       <main className="min-w-0 flex-1 px-3 sm:px-6 lg:px-8 py-5">
@@ -136,6 +139,7 @@ function Parent() {
         <div className="mb-5 flex flex-col md:flex-row md:items-center justify-between gap-4 border-b pb-5">
           <div>
             <div className="flex items-center gap-2">
+              <MobileMenuButton onClick={() => setMobileMenuOpen(true)} className="lg:hidden" />
               {state.tenants.find((t) => t.id === state.currentTenantId)?.logoUrl && (
                 <img
                   src={state.tenants.find((t) => t.id === state.currentTenantId)?.logoUrl}
@@ -788,7 +792,7 @@ function Parent() {
       </div>
 
       {/* Mobile Sticky Bottom Nav Bar (visible on small screens) */}
-      <nav className="lg:hidden fixed bottom-0 left-0 right-0 z-30 flex items-center justify-around border-t bg-card/95 backdrop-blur-md px-1 py-2 shadow-lg">
+      <nav className="lg:hidden fixed bottom-0 left-0 right-0 z-30 grid grid-cols-5 border-t bg-card/95 backdrop-blur-md px-1 py-2 shadow-lg">
         {navItems.map((item) => {
           const active = tab === item.key;
           const Icon = item.icon;
@@ -797,14 +801,14 @@ function Parent() {
               key={item.key}
               type="button"
               onClick={() => setTab(item.key as typeof tab)}
-              className={`flex flex-col items-center gap-0.5 px-2 py-1 text-[10px] font-bold transition-all cursor-pointer ${
+              className={`flex min-w-0 w-full flex-col items-center justify-center gap-0.5 px-0.5 py-1 text-[10px] font-bold transition-all cursor-pointer ${
                 active ? 'text-amber-500' : 'text-muted-foreground hover:text-foreground'
               }`}
             >
               <div className={`grid h-7 w-10 place-items-center rounded-full transition-all ${active ? 'bg-amber-400 text-slate-950 font-bold' : ''}`}>
                 <Icon className="h-4 w-4" />
               </div>
-              <span className="truncate max-w-[64px]">{item.label.split(' ')[0]}</span>
+              <span className="w-full truncate text-center">{item.shortLabel}</span>
             </button>
           );
         })}
