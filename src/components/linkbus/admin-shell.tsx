@@ -6,6 +6,7 @@ import { Button } from "@/components/ui/button";
 import { Dialog, DialogContent, DialogDescription, DialogTitle } from "@/components/ui/dialog";
 import { TopBar } from "./shared";
 import { usePlatform } from "./platform-provider";
+import { InstallAppButton } from "./install-app-button";
 
 export const adminNavigation = [
   { to: "/admin/dashboard", label: "Mapa en vivo", icon: Map },
@@ -27,10 +28,10 @@ export function AdminShell({ children }: { children: ReactNode }) {
     <div className="min-h-screen">
       <TopBar />
       <div className="mx-auto flex max-w-[1600px]">
-        <aside className="sticky top-[56px] hidden h-[calc(100vh-56px)] w-60 shrink-0 flex-col border-r bg-card px-4 py-5 md:flex">
-          <div className="flex flex-col items-center gap-2 border-b pb-4 text-center">
+        <aside className="sticky top-[56px] hidden h-[calc(100vh-56px)] w-64 shrink-0 flex-col border-r border-white/10 bg-slate-950 px-4 py-5 text-white md:flex">
+          <div className="flex flex-col items-center gap-2.5 border-b border-white/10 pb-4 text-center">
             {activeTenant?.logoUrl ? (
-              <div className="w-full overflow-hidden rounded-2xl border border-slate-200/80 shadow-sm">
+              <div className="w-full overflow-hidden rounded-2xl border border-white/15 bg-white/5 shadow-sm">
                 <img
                   src={activeTenant.logoUrl}
                   alt={state.company}
@@ -38,15 +39,15 @@ export function AdminShell({ children }: { children: ReactNode }) {
                 />
               </div>
             ) : (
-              <span className="grid h-14 w-14 place-items-center rounded-2xl bg-gold text-slate-950 shadow-sm">
+              <span className="grid h-14 w-14 place-items-center rounded-2xl bg-amber-400 text-slate-950 shadow-sm">
                 <Bus className="h-7 w-7" />
               </span>
             )}
             <div className="min-w-0 w-full">
-              <p className="break-words text-sm font-extrabold uppercase tracking-tight leading-snug" title={state.company}>
+              <p className="break-words text-sm font-extrabold uppercase tracking-tight leading-snug text-white" title={state.company}>
                 {state.company}
               </p>
-              <span className="mt-1 inline-block rounded-full border border-slate-200 bg-slate-100 px-2.5 py-0.5 text-[10px] font-bold uppercase tracking-wider text-slate-600 dark:border-white/10 dark:bg-white/5 dark:text-slate-300">
+              <span className="mt-1 inline-block rounded-full border border-white/15 bg-white/10 px-2.5 py-0.5 text-[10px] font-bold uppercase tracking-wider text-amber-300">
                 Flota afiliada
               </span>
             </div>
@@ -54,32 +55,38 @@ export function AdminShell({ children }: { children: ReactNode }) {
           {state.isSuperAdmin && (
             <Link
               to="/superadmin"
-              className="mt-2.5 flex items-center justify-between rounded-lg bg-amber-500/10 px-2.5 py-1.5 text-[11px] font-semibold text-amber-700 hover:bg-amber-500/20 dark:text-amber-300"
+              className="mt-3 flex items-center justify-between rounded-xl border border-amber-400/30 bg-amber-400/10 px-3 py-2 text-xs font-bold text-amber-300 hover:bg-amber-400/20 transition-colors"
             >
-              <span className="flex items-center gap-1.5"><Building2 className="h-3 w-3" /> Centro de Mando</span>
+              <span className="flex items-center gap-1.5"><Building2 className="h-3.5 w-3.5" /> Centro de Mando</span>
               <span>&rarr;</span>
             </Link>
           )}
-          <p className="mb-2 mt-6 px-3 text-[10px] font-bold tracking-widest text-muted-foreground">OPERACIONES</p>
-          <nav className="flex flex-col gap-1">
+          <p className="mb-2 mt-5 px-3 text-[10px] font-bold uppercase tracking-widest text-slate-400">OPERACIONES</p>
+          <nav className="flex-1 flex flex-col gap-1 overflow-y-auto pr-0.5">
             {adminNavigation.map((n) => (
-              <Button
-                asChild
-                variant="ghost"
+              <Link
                 key={n.to}
-                className={`h-10 justify-start px-3 text-xs ${pathname === n.to ? "bg-gold/25 font-bold text-primary" : "text-muted-foreground"}`}
+                to={n.to}
+                className={`w-full flex items-center justify-between gap-2 rounded-xl px-3 py-2.5 text-xs font-bold transition-all ${
+                  pathname === n.to
+                    ? "bg-amber-400 text-slate-950 shadow-sm font-extrabold"
+                    : "text-slate-300 hover:bg-white/10 hover:text-white"
+                }`}
               >
-                <Link to={n.to}>
-                  <n.icon className="h-4 w-4 mr-2" />
-                  {n.label}
-                  {pathname === n.to && <ChevronRight className="ml-auto h-3.5 w-3.5" />}
-                </Link>
-              </Button>
+                <span className="flex items-center gap-2.5 min-w-0">
+                  <n.icon className={`h-4 w-4 shrink-0 ${pathname === n.to ? "text-slate-950" : "text-slate-400"}`} />
+                  <span className="truncate">{n.label}</span>
+                </span>
+                {pathname === n.to && <ChevronRight className="h-3.5 w-3.5 shrink-0 text-slate-950" />}
+              </Link>
             ))}
           </nav>
-          <div className="mt-auto border-t px-2 pt-4">
-            <p className="text-xs font-bold">Carolina Morales</p>
-            <p className="text-[11px] text-muted-foreground">Administradora · Tenant Activo</p>
+          <div className="mt-auto space-y-3 border-t border-white/10 pt-3">
+            <InstallAppButton />
+            <div className="px-1">
+              <p className="text-xs font-bold text-white">Carolina Morales</p>
+              <p className="text-[11px] text-slate-400">Administradora · Tenant Activo</p>
+            </div>
           </div>
         </aside>
         <main className="min-w-0 flex-1 p-4 sm:p-6 lg:p-8">
@@ -114,12 +121,13 @@ export function AdminShell({ children }: { children: ReactNode }) {
                 <Bus className="h-5 w-5" />
               </span>
             )}
-            <div className="min-w-0">
+            <div className="min-w-0 flex-1">
               <p className="truncate text-sm font-extrabold uppercase tracking-tight">{state.company}</p>
               <span className="mt-0.5 inline-block rounded-full border border-slate-200 bg-slate-100 px-2 py-0.5 text-[10px] font-bold uppercase tracking-wider text-slate-600 dark:border-white/10 dark:bg-white/5 dark:text-slate-300">
                 Flota afiliada
               </span>
             </div>
+            <InstallAppButton compact />
           </div>
           <nav className="mb-5 flex gap-2 overflow-x-auto pb-2 md:hidden">
             {adminNavigation.map((n) => (

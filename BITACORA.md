@@ -4,6 +4,16 @@
 
 ---
 
+### [2026-11-15 17:21] — 🎨 Sidebars Oscuros (`bg-slate-950`) para Admin, Familias y Chofer + Botón "Instalar App" PWA
+- **Botón Profesional "Instalar App" (`install-app-button.tsx`):**
+  - Se creó `InstallAppButton` (versión completa para sidebar y compacta en móvil) que intercepta `beforeinstallprompt` para lanzar el instalador nativo en Chrome/Edge/Android, muestra guía de 2 pasos para Safari/iOS y detecta modo `standalone`.
+- **Sidebar Oscuro Unificado (`role-sidebar.tsx`, `admin-shell.tsx`, `apoderado.tsx`, `chofer.tsx`):**
+  - Se creó `RoleSidebar` con fondo `bg-slate-950`, pill activo `bg-amber-400 text-slate-950`, logo y nombre del transportista arriba, contadores y el botón **Instalar App** al pie.
+  - Se unificó `admin-shell.tsx` al mismo estilo `bg-slate-950` y se integró `RoleSidebar` en `/apoderado` y `/chofer` en escritorio/tablet (`lg:flex`), manteniendo la barra inferior táctil en celular (`lg:hidden`) junto al botón compacto **Instalar App**.
+- **Verificación y Despliegue:** `npm.cmd test` (**2 archivos, 33/33 pruebas aprobadas**) y despliegue en producción en **Vercel** (`https://nexus-go-cr.vercel.app`).
+
+---
+
 ### [2026-11-15 17:08] — 🔄 Sistema de Versiones `v1.0.1`, Audio/Push Realtime, Asistencia Móvil, Campanita y Foto de Buseta
 - **Sistema de Actualización de Versiones y Reset de Caché (`public/version.json`, `app-version.ts`, `version-update-modal.tsx`, `sw.js`, `__root.tsx`):**
   - Se inició el control de versiones en `v1.0.1` (`APP_VERSION` y `/version.json` excluido de caché en `sw.js`, con `CACHE_NAME = 'nexusgo-pwa-v1.0.1'`).

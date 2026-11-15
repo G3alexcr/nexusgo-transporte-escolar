@@ -37,6 +37,8 @@ import { LiveEtaWidget } from '@/components/linkbus/live-eta';
 import { ReportarSinpeModal, SinpeComprobanteModal } from '@/components/linkbus/sinpe-modal';
 import { ContratoTransporteModal } from '@/components/linkbus/contrato-modal';
 import { TopBar, Badge } from '@/components/linkbus/shared';
+import { RoleSidebar } from '@/components/linkbus/role-sidebar';
+import { InstallAppButton } from '@/components/linkbus/install-app-button';
 import { AuthGuard } from '@/components/linkbus/auth-guard';
 import { FleetMap } from '@/components/linkbus/fleet-map';
 import { usePlatform } from '@/components/linkbus/platform-provider';
@@ -116,7 +118,20 @@ function Parent() {
     <div className="min-h-screen bg-slate-50/50 dark:bg-slate-950 pb-20 lg:pb-12">
       <TopBar />
 
-      <main className="mx-auto max-w-7xl px-3 sm:px-6 lg:px-8 py-5">
+      <div className="mx-auto flex max-w-[1600px]">
+        <RoleSidebar
+          company={state.company}
+          logoUrl={state.tenants.find((t) => t.id === state.currentTenantId)?.logoUrl}
+          roleLabel="Portal Familia"
+          sectionTitle="MI TRANSPORTE"
+          items={navItems}
+          activeKey={tab}
+          onSelect={(k) => setTab(k as typeof tab)}
+          userName={activeParent}
+          userSubtitle={`Estudiante: ${child.nombre.split(' ')[0]}`}
+        />
+
+      <main className="min-w-0 flex-1 px-3 sm:px-6 lg:px-8 py-5">
         {/* Top Header / Context Banner */}
         <div className="mb-5 flex flex-col md:flex-row md:items-center justify-between gap-4 border-b pb-5">
           <div>
@@ -142,6 +157,7 @@ function Parent() {
           </div>
 
           <div className="flex items-center gap-2.5 flex-wrap">
+            <span className="lg:hidden"><InstallAppButton compact /></span>
             <NotificationBellButton onClick={() => setNotifOpen(true)} />
 
             <Button
@@ -166,34 +182,6 @@ function Parent() {
               <span>Estudiante: {child.nombre.split(' ')[0]} ▾</span>
             </Button>
           </div>
-        </div>
-
-        {/* Desktop Tabs Bar */}
-        <div className="mb-6 flex items-center gap-1 border-b border-border/80 overflow-x-auto scrollbar-thin">
-          {navItems.map((item) => {
-            const active = tab === item.key;
-            const Icon = item.icon;
-            return (
-              <button
-                key={item.key}
-                type="button"
-                onClick={() => setTab(item.key as typeof tab)}
-                className={`flex items-center gap-2 px-4 py-3 text-sm font-bold border-b-2 transition-all cursor-pointer whitespace-nowrap ${
-                  active
-                    ? 'border-amber-500 text-amber-600 dark:text-amber-400 bg-amber-50/50 dark:bg-amber-950/20 rounded-t-xl'
-                    : 'border-transparent text-muted-foreground hover:text-foreground hover:border-border'
-                }`}
-              >
-                <Icon className={`h-4 w-4 ${active ? 'text-amber-500' : 'text-muted-foreground'}`} />
-                <span>{item.label}</span>
-                {'count' in item && typeof item.count === 'number' && item.count > 0 && (
-                  <span className="ml-1 rounded-full bg-amber-400 px-1.5 py-0.2 text-[10px] font-black text-slate-950">
-                    {item.count}
-                  </span>
-                )}
-              </button>
-            );
-          })}
         </div>
 
         {/* TAB 1: SEGUIMIENTO EN VIVO (MAPA) */}
@@ -797,6 +785,7 @@ function Parent() {
           </div>
         )}
       </main>
+      </div>
 
       {/* Mobile Sticky Bottom Nav Bar (visible on small screens) */}
       <nav className="lg:hidden fixed bottom-0 left-0 right-0 z-30 flex items-center justify-around border-t bg-card/95 backdrop-blur-md px-1 py-2 shadow-lg">
