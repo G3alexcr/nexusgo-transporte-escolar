@@ -17,4 +17,5 @@
 ## Git, GitHub y Despliegue (Vercel)
 - **Repositorio remoto (`origin`):** `https://github.com/G3alexcr/nexusgo-transporte-escolar.git`
 - **Rama principal:** `main`
-- **Flujo estándar de entrega:** Cuando el usuario autorice cambios y solicite guardar/publicar, actualizar `BITACORA.md` (previa consulta), hacer `git add` + `git commit` y `git push origin main` (además de `vercel --prod` si aún no está conectado el auto-deploy en Vercel `g3-8a54/nexus-go-cr`).
+- **Regla estricta de Commit y Push:** El agente **NUNCA** debe ejecutar `git commit` ni `git push` por iniciativa propia ni proponerlos automáticamente tras cada arreglo. **Únicamente el usuario decide e indica de forma explícita cuándo hacer `commit` y `push`.**
+- **Bitácora (`BITACORA.md`) y Vercel:** Actualizar `BITACORA.md` (previa consulta) y desplegar solo cuando el usuario lo solicite o autorice expresamente.

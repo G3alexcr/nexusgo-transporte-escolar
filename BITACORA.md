@@ -4,6 +4,25 @@
 
 ---
 
+### [2026-11-15 17:08] — 🔄 Sistema de Versiones `v1.0.1`, Audio/Push Realtime, Asistencia Móvil, Campanita y Foto de Buseta
+- **Sistema de Actualización de Versiones y Reset de Caché (`public/version.json`, `app-version.ts`, `version-update-modal.tsx`, `sw.js`, `__root.tsx`):**
+  - Se inició el control de versiones en `v1.0.1` (`APP_VERSION` y `/version.json` excluido de caché en `sw.js`, con `CACHE_NAME = 'nexusgo-pwa-v1.0.1'`).
+  - Se añadió el modal compacto `VersionUpdateModal` que verifica nuevas versiones al abrir, al volver a primer plano en móvil y cada 2 minutos, mostrando **"Nueva actualización disponible"** con el botón **Actualizar ahora** para limpiar cachés del Service Worker y recargar limpiamente.
+  - Se mostró `Nexus Go v1.0.1` al pie del menú de usuario (`user-profile-menu.tsx`).
+- **Audio y Push Realtime en Teléfono del Padre (`platform-provider.tsx`, `sound-effects.ts`):**
+  - Se reprodujo `playNotificationSound` (`bus_approach`, `sos_alert`, `push`), `toast.info` y `showServiceWorkerNotification` en los dispositivos receptores al llegar un `INSERT` de `notices` o `notifications` por Supabase Realtime, eliminando la notificación local redundante en el dispositivo emisor y desbloqueando `AudioContext` al primer toque en iOS/Android.
+- **Asistencia y Botones Móviles del Chofer (`platform-state.ts`, `driver-attendance.tsx`, `chofer.tsx`):**
+  - Se corrigió `case "attendance"` en `platformReducer` para inicializar registros sin fila previa en `attendance` y actualizar estado, contador `aBordo`, `Subida`/`Bajada` y Supabase.
+  - Se ajustaron los botones de **Avisos Automáticos a los Apoderados** (`whitespace-normal`, `h-auto min-h-10`, `shrink-0`) para evitar desbordamientos en móvil.
+- **Campanita Solo con No Leídas y Guardado Inmediato de Foto de Buseta (`user-profile-menu.tsx`, `admin-busetas.tsx`):**
+  - Se filtró la campanita para mostrar únicamente notificaciones no leídas (`!n.read`), marcando como leída al tocar cualquiera y vaciándola al pulsar **Marcar leídas**.
+  - En `admin-busetas.tsx`, al subir la foto exterior o documentos CTP de una unidad existente, se persiste de inmediato en Supabase (`dispatch({ type: 'updateRoute', ... })`).
+- **GitHub y Reglas (`AGENTS.md`):**
+  - Se vinculó el repositorio remoto `G3alexcr/nexusgo-transporte-escolar` con Vercel (`g3-8a54/nexus-go-cr`) y se fijó en `AGENTS.md` la regla estricta de no ejecutar `git commit` ni `git push` sin instrucción explícita del usuario.
+- **Verificación y Despliegue:** `npm.cmd test` (**2 archivos, 33/33 pruebas aprobadas**) y despliegue en producción en **Vercel** (`https://nexus-go-cr.vercel.app`).
+
+---
+
 ### [2026-11-15 15:24] — 📱 TopBar & Logo Móvil, Orden de Transportistas en Supabase (`sortOrder`) y Re-despliegue en Vercel
 - **Limpieza Responsiva de `TopBar` (`shared.tsx`, `user-profile-menu.tsx`):**
   - Se fijó `shrink-0` y `whitespace-nowrap` en el título **Nexus Go**, ocultando el subtítulo y el pill secundario en pantallas angostas (`< 640px`), y se retiró el botón circular de Wifi del `TopBar` para evitar recortes en móvil.

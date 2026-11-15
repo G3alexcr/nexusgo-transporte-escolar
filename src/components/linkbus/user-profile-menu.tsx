@@ -14,6 +14,7 @@ import {
 import { ThemeToggle } from './theme-toggle';
 import { useAuth } from './auth-provider';
 import { usePlatform } from './platform-provider';
+import { APP_VERSION } from '@/lib/app-version';
 import { toast } from 'sonner';
 
 const ROLE_LABELS: Record<string, string> = {
@@ -216,6 +217,9 @@ export function UserProfileMenu() {
               <LogOut className="h-3.5 w-3.5" />
               <span>Cerrar sesión</span>
             </button>
+            <p className="mt-1 px-3 py-1 text-[10px] font-mono text-muted-foreground/70 text-right">
+              Nexus Go v{APP_VERSION}
+            </p>
           </div>
         </div>
       )}

@@ -1,4 +1,4 @@
-const CACHE_NAME = 'linkbus-pwa-v1';
+const CACHE_NAME = 'nexusgo-pwa-v1.0.1';
 const APP_SHELL = ['/', '/manifest.json', '/favicon.svg'];
 
 self.addEventListener('install', (event) => {
@@ -26,8 +26,8 @@ self.addEventListener('fetch', (event) => {
   if (request.method !== 'GET') return;
 
   const url = new URL(request.url);
-  // Never cache external API or Supabase calls so DB data is never served stale
-  if (url.origin !== self.location.origin || url.pathname.startsWith('/api/')) {
+  // Never cache external API, version manifest, or Supabase calls so updates & DB data are never served stale
+  if (url.origin !== self.location.origin || url.pathname.startsWith('/api/') || url.pathname === '/version.json') {
     return;
   }
 

@@ -14,6 +14,7 @@ import { Toaster } from "sonner";
 import appCss from "../styles.css?url";
 import { AuthProvider } from "@/components/linkbus/auth-provider";
 import { PlatformProvider } from "@/components/linkbus/platform-provider";
+import { VersionUpdateModal } from "@/components/linkbus/version-update-modal";
 import { registerNexusGoServiceWorker } from "@/lib/pwa-push";
 
 function NotFoundComponent() {
@@ -137,6 +138,7 @@ function RootComponent() {
         <PlatformProvider><Outlet /></PlatformProvider>
       </AuthProvider>
       <Toaster position="top-center" richColors />
+      <VersionUpdateModal />
     </QueryClientProvider>
   );
 }
