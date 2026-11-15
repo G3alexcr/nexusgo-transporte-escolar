@@ -26,6 +26,7 @@ import {
   saveOfflineQueueToIdb,
 } from "@/lib/offline-idb";
 import { showServiceWorkerNotification } from "@/lib/pwa-push";
+import { playNotificationSound } from "@/lib/sound-effects";
 import { useAuth } from "./auth-provider";
 
 const PlatformContext = createContext<{ state: PlatformState; dispatch: Dispatch<PlatformAction> } | null>(null);
@@ -148,6 +149,7 @@ export function PlatformProvider({ children }: { children: ReactNode }) {
             read: Boolean(row["read"]),
           };
           rawDispatch({ type: "addNotification", notification: notif });
+          playNotificationSound(notif.type === "alert" ? "sos_alert" : "push");
           toast.info(notif.title, { description: notif.body });
           const targetUrl = profile?.role === "chofer" || profile?.role === "asistente" ? "/chofer" : "/apoderado";
           void showServiceWorkerNotification(notif.title, notif.body, targetUrl);
@@ -160,12 +162,25 @@ export function PlatformProvider({ children }: { children: ReactNode }) {
           const row = payload.new as Record<string, unknown>;
           const id = String(row["id"] ?? "");
           if (!id || stateRef.current.notices.some((n) => n.id === id)) return;
+          const message = String(row["message"] ?? "");
+          const time = String(row["time"] ?? "");
           rawDispatch({
             type: "hydrateFromRemote",
             state: {
-              notices: [{ id, message: String(row["message"] ?? ""), time: String(row["time"] ?? "") }, ...stateRef.current.notices],
+              notices: [{ id, message, time }, ...stateRef.current.notices],
             },
           });
+          const lower = message.toLowerCase();
+          const soundType =
+            lower.includes("aproximándose") || lower.includes("aproximandose")
+              ? "bus_approach"
+              : lower.includes("sos") || lower.includes("presa") || lower.includes("accidente") || lower.includes("emergencia") || lower.includes("alerta")
+                ? "sos_alert"
+                : "push";
+          playNotificationSound(soundType);
+          toast.info("Aviso de Ruta Nexus Go", { description: message });
+          const targetUrl = profile?.role === "chofer" || profile?.role === "asistente" ? "/chofer" : "/apoderado";
+          void showServiceWorkerNotification("Aviso de Ruta Nexus Go", message, targetUrl);
         },
       )
       .on(
@@ -209,11 +224,7 @@ export function PlatformProvider({ children }: { children: ReactNode }) {
         void clearOfflineQueueFromIdb();
       }
 
-      if (action.type === "addNotification") {
-        void showServiceWorkerNotification(action.notification.title, action.notification.body, "/apoderado");
-      } else if (action.type === "notice") {
-        void showServiceWorkerNotification("Aviso de Ruta Nexus Go", action.message, "/apoderado");
-      } else if (action.type === "syncOfflineQueue" && stateRef.current.offlineQueue.length === 0 && nextState.notifications[0]) {
+      if (action.type === "syncOfflineQueue" && stateRef.current.offlineQueue.length === 0 && nextState.notifications[0]) {
         void showServiceWorkerNotification(nextState.notifications[0].title, nextState.notifications[0].body, "/chofer");
       }
     }

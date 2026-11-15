@@ -1,13 +1,44 @@
 // Audio synthesis using browser Web Audio API (Zero external assets, 100% reliable)
 
-type SoundType = 'push' | 'bus_approach' | 'sos_alert' | 'absence_alert' | 'qr_scan';
+export type SoundType = 'push' | 'bus_approach' | 'sos_alert' | 'absence_alert' | 'qr_scan';
 
 class SoundEffectsService {
   private ctx: AudioContext | null = null;
   private soundEnabled: boolean = true;
+  private unlocked: boolean = false;
 
   constructor() {
-    // AudioContext will be initialized on first user interaction
+    this.setupMobileAudioUnlock();
+  }
+
+  private setupMobileAudioUnlock() {
+    if (typeof window === 'undefined') return;
+    const unlock = () => {
+      if (this.unlocked && this.ctx?.state === 'running') return;
+      const ctx = this.getContext();
+      if (!ctx) return;
+      if (ctx.state === 'suspended') {
+        void ctx.resume().then(() => {
+          this.unlocked = true;
+        }).catch(() => {});
+      } else {
+        this.unlocked = true;
+      }
+      // Play a silent 1-sample buffer to unlock iOS Safari Web Audio
+      try {
+        const buffer = ctx.createBuffer(1, 1, 22050);
+        const source = ctx.createBufferSource();
+        source.buffer = buffer;
+        source.connect(ctx.destination);
+        source.start(0);
+      } catch {
+        // Ignore if context is not ready yet
+      }
+    };
+
+    window.addEventListener('pointerdown', unlock, { passive: true });
+    window.addEventListener('touchstart', unlock, { passive: true });
+    window.addEventListener('keydown', unlock, { passive: true });
   }
 
   private getContext(): AudioContext | null {
@@ -17,9 +48,6 @@ class SoundEffectsService {
       if (AudioCtx) {
         this.ctx = new AudioCtx();
       }
-    }
-    if (this.ctx && this.ctx.state === 'suspended') {
-      this.ctx.resume().catch(() => {});
     }
     return this.ctx;
   }
@@ -39,6 +67,22 @@ class SoundEffectsService {
       const ctx = this.getContext();
       if (!ctx) return;
 
+      if (ctx.state === 'suspended') {
+        void ctx
+          .resume()
+          .then(() => this.playWithContext(ctx, type))
+          .catch(() => {});
+        return;
+      }
+
+      this.playWithContext(ctx, type);
+    } catch (err) {
+      console.warn('Audio synthesis error:', err);
+    }
+  }
+
+  private playWithContext(ctx: AudioContext, type: SoundType) {
+    try {
       const now = ctx.currentTime;
 
       // Trigger mobile vibration if available
