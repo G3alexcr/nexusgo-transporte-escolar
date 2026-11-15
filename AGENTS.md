@@ -15,6 +15,6 @@
   - **NUNCA** mostrar, imprimir, copiar, citar ni pasar contraseñas, tokens de acceso, llaves privadas o credenciales (como claves de `.env`, tokens de Supabase, API keys, etc.) en el chat, respuestas, logs visibles o archivos de bitácora. Referenciar únicamente el nombre de la variable o el archivo donde reside.
 
 ## Git, GitHub y Despliegue (Vercel)
-- **Repositorio remoto (`origin`):** `https://github.com/alexcrG3/NexusGo-Transporte-escolar.git`
+- **Repositorio remoto (`origin`):** `https://github.com/G3alexcr/nexusgo-transporte-escolar.git`
 - **Rama principal:** `main`
 - **Flujo estándar de entrega:** Cuando el usuario autorice cambios y solicite guardar/publicar, actualizar `BITACORA.md` (previa consulta), hacer `git add` + `git commit` y `git push origin main` (además de `vercel --prod` si aún no está conectado el auto-deploy en Vercel `g3-8a54/nexus-go-cr`).
