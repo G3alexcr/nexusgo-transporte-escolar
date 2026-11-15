@@ -229,7 +229,8 @@ export function UserUtilityBar({ darkBar = false }: { darkBar?: boolean }) {
   const bellRef = useRef<HTMLDivElement | null>(null);
 
   const notifications = state.notifications || [];
-  const unreadCount = notifications.filter((n) => !n.read).length;
+  const unreadNotifications = notifications.filter((n) => !n.read);
+  const unreadCount = unreadNotifications.length;
 
   useEffect(() => {
     if (!notifOpen) return;
@@ -284,17 +285,22 @@ export function UserUtilityBar({ darkBar = false }: { darkBar?: boolean }) {
               )}
             </div>
             <div className="max-h-64 overflow-y-auto divide-y">
-              {notifications.length === 0 ? (
-                <p className="p-4 text-center text-xs text-muted-foreground">Sin notificaciones recientes</p>
+              {unreadNotifications.length === 0 ? (
+                <p className="p-4 text-center text-xs text-muted-foreground">Sin notificaciones pendientes</p>
               ) : (
-                notifications.slice(0, 6).map((n) => (
-                  <div key={n.id} className={`p-3 text-xs ${n.read ? 'opacity-70' : 'bg-amber-400/5'}`}>
+                unreadNotifications.map((n) => (
+                  <button
+                    type="button"
+                    key={n.id}
+                    onClick={() => dispatch({ type: 'markNotificationRead', id: n.id })}
+                    className="w-full text-left p-3 text-xs bg-amber-400/5 hover:bg-amber-400/15 transition-colors cursor-pointer"
+                  >
                     <div className="flex items-center justify-between gap-2">
                       <p className="font-bold text-foreground truncate">{n.title}</p>
                       <span className="text-[10px] text-muted-foreground shrink-0">{n.time}</span>
                     </div>
                     <p className="text-[11px] text-muted-foreground mt-0.5 line-clamp-2">{n.body}</p>
-                  </div>
+                  </button>
                 ))
               )}
             </div>
