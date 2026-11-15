@@ -1,0 +1,54 @@
+{
+  "name": "Nexus Go Costa Rica — Transporte Escolar",
+  "short_name": "Nexus Go",
+  "description": "Seguimiento satelital en tiempo real, credencial digital QR, asistencia y pagos de busetas escolares en Costa Rica.",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#0B132B",
+  "theme_color": "#0B132B",
+  "orientation": "portrait-primary",
+  "categories": ["education", "travel", "productivity"],
+  "icons": [
+    {
+      "src": "/logo-nexus-go-icon.jpg",
+      "sizes": "192x192",
+      "type": "image/jpeg",
+      "purpose": "any"
+    },
+    {
+      "src": "/logo-nexus-go-icon.jpg",
+      "sizes": "512x512",
+      "type": "image/jpeg",
+      "purpose": "maskable any"
+    },
+    {
+      "src": "/favicon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any"
+    }
+  ],
+  "shortcuts": [
+    {
+      "name": "App Apoderado",
+      "short_name": "Apoderado",
+      "description": "Seguimiento en vivo del recorrido de tu hijo",
+      "url": "/apoderado",
+      "icons": [{ "src": "/favicon.svg", "sizes": "96x96" }]
+    },
+    {
+      "name": "App Chofer",
+      "short_name": "Chofer",
+      "description": "Lista de asistencia y escáner QR de buseta",
+      "url": "/chofer",
+      "icons": [{ "src": "/favicon.svg", "sizes": "96x96" }]
+    },
+    {
+      "name": "Panel Administración",
+      "short_name": "Admin",
+      "description": "Monitoreo general de la flota escolar",
+      "url": "/admin/dashboard",
+      "icons": [{ "src": "/favicon.svg", "sizes": "96x96" }]
+    }
+  ]
+}

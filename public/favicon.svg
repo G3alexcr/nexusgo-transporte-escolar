@@ -1,0 +1,29 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" width="64" height="64">
+  <rect width="64" height="64" rx="16" fill="#0284c7"/>
+  <!-- Autobús escolar Nexus Go -->
+  <g transform="translate(8, 12)">
+    <!-- Cuerpo del bus -->
+    <rect x="2" y="10" width="44" height="24" rx="5" fill="#facc15"/>
+    <!-- Techo / parte superior -->
+    <path d="M 6 10 L 8 4 L 40 4 L 42 10 Z" fill="#eab308"/>
+    <!-- Luces de techo -->
+    <circle cx="12" cy="7" r="1.5" fill="#ef4444"/>
+    <circle cx="36" cy="7" r="1.5" fill="#ef4444"/>
+    <circle cx="24" cy="7" r="1.5" fill="#f59e0b"/>
+    <!-- Ventanas -->
+    <rect x="6" y="13" width="7" height="9" rx="1.5" fill="#0f172a"/>
+    <rect x="16" y="13" width="7" height="9" rx="1.5" fill="#0f172a"/>
+    <rect x="25" y="13" width="7" height="9" rx="1.5" fill="#0f172a"/>
+    <rect x="34" y="13" width="8" height="9" rx="1.5" fill="#0f172a"/>
+    <!-- Franja central -->
+    <rect x="2" y="24" width="44" height="3" fill="#1e293b"/>
+    <!-- Faros -->
+    <circle cx="5" cy="29" r="2" fill="#ffffff"/>
+    <circle cx="43" cy="29" r="2" fill="#ffffff"/>
+    <!-- Ruedas -->
+    <circle cx="12" cy="34" r="5" fill="#1e293b"/>
+    <circle cx="12" cy="34" r="2" fill="#94a3b8"/>
+    <circle cx="36" cy="34" r="5" fill="#1e293b"/>
+    <circle cx="36" cy="34" r="2" fill="#94a3b8"/>
+  </g>
+</svg>
