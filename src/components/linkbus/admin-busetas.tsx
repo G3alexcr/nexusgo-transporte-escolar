@@ -297,10 +297,24 @@ export function AdminBusetas() {
         folder: 'fleet',
         filename: file.name,
       });
-      setFormData((prev) => ({ ...prev, [field]: publicUrl }));
-      toast.success('Documento subido y adjuntado correctamente', { id: toastId });
+      const updatedForm = { ...formData, [field]: publicUrl };
+      setFormData(updatedForm);
+      if (editingBus) {
+        const updatedBus: Van = {
+          ...editingBus,
+          ...updatedForm,
+        };
+        dispatch({ type: 'updateRoute', route: updatedBus });
+        setEditingBus(updatedBus);
+      }
+      toast.success(
+        editingBus ? 'Foto/documento guardado en la ficha de la buseta' : 'Documento subido y adjuntado correctamente',
+        { id: toastId },
+      );
     } catch {
       toast.error('No se pudo subir el documento', { id: toastId });
+    } finally {
+      e.target.value = '';
     }
   };
 
