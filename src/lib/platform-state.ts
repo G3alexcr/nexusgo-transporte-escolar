@@ -486,9 +486,8 @@ export function platformReducer(state: PlatformState, action: PlatformAction): P
       };
     }
     case "attendance": {
-      if (!state.active || !state.attendance[action.id]) return state;
-      const previous = state.attendance[action.id];
-      if (!previous) return state;
+      if (!state.active) return state;
+      const previous: Attendance = state.attendance[action.id] ?? { status: "Pendiente", subida: "—", bajada: "—" };
       const row: Attendance = {
         status: action.status,
         subida: action.status === "Ausente" || action.status === "Pendiente" ? "—" : previous.subida === "—" ? action.time : previous.subida,

@@ -411,19 +411,19 @@ function Driver() {
                 </span>
 
                 <Button
-                  className="w-full justify-start gap-2 text-xs font-bold rounded-xl h-10 cursor-pointer bg-amber-400 text-slate-950 hover:bg-amber-500"
+                  className="w-full justify-start gap-2.5 text-xs font-bold rounded-xl h-auto min-h-10 py-2.5 px-3.5 text-left whitespace-normal leading-snug cursor-pointer bg-amber-400 text-slate-950 hover:bg-amber-500"
                   onClick={() => notice(`Buseta (${van?.patente}) aproximándose a paradas`)}
                 >
-                  <Bus className="h-4 w-4" />
-                  <span>Aviso: Buseta aproximándose (sonido en apps)</span>
+                  <Bus className="h-4 w-4 shrink-0" />
+                  <span>Aviso: Buseta aproximándose</span>
                 </Button>
 
                 <Button
                   variant="outline"
-                  className="w-full justify-start gap-2 text-xs font-bold rounded-xl h-10 cursor-pointer hover:bg-muted"
+                  className="w-full justify-start gap-2.5 text-xs font-bold rounded-xl h-auto min-h-10 py-2.5 px-3.5 text-left whitespace-normal leading-snug cursor-pointer hover:bg-muted"
                   onClick={() => notice(`Llegada a ${van?.colegio || 'colegio'} confirmada con estudiantes seguros`)}
                 >
-                  <Check className="h-4 w-4 text-emerald-500" />
+                  <Check className="h-4 w-4 shrink-0 text-emerald-500" />
                   <span>Confirmar llegada a {van?.colegio?.split(' ')[0]}</span>
                 </Button>
 
@@ -432,19 +432,19 @@ function Driver() {
                     type="button"
                     variant="outline"
                     onClick={() => setQrScannerOpen(true)}
-                    className="gap-1.5 text-xs font-bold rounded-xl h-10 border-amber-400/50 hover:bg-amber-400/15 cursor-pointer"
+                    className="gap-1.5 text-xs font-bold rounded-xl h-auto min-h-10 py-2 px-2.5 whitespace-normal text-center leading-tight border-amber-400/50 hover:bg-amber-400/15 cursor-pointer"
                   >
-                    <QrCode className="h-4 w-4 text-amber-500" />
-                    <span>Escanear Carnet QR</span>
+                    <QrCode className="h-4 w-4 shrink-0 text-amber-500" />
+                    <span>Escanear QR</span>
                   </Button>
                   <Button
                     type="button"
                     variant="destructive"
                     onClick={() => setSosOpen(true)}
-                    className="gap-1.5 text-xs font-bold rounded-xl h-10 cursor-pointer"
+                    className="gap-1.5 text-xs font-bold rounded-xl h-auto min-h-10 py-2 px-2.5 whitespace-normal text-center leading-tight cursor-pointer"
                   >
-                    <AlertTriangle className="h-4 w-4" />
-                    <span>Reportar Presa / SOS</span>
+                    <AlertTriangle className="h-4 w-4 shrink-0" />
+                    <span>Presa / SOS</span>
                   </Button>
                 </div>
               </div>

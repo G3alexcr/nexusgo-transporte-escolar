@@ -10,9 +10,9 @@ import { toast } from 'sonner';
 import { playNotificationSound } from '@/lib/sound-effects';
 
 const actions: { status: AttendanceStatus; icon: typeof Bus; selected: string; label: string }[] = [
-  { status: 'A bordo', icon: Bus, selected: 'bg-amber-400 text-slate-950 hover:bg-amber-500 font-extrabold', label: 'A bordo' },
-  { status: 'Entregado', icon: Check, selected: 'bg-emerald-600 text-white hover:bg-emerald-700 font-extrabold', label: 'Entregado' },
-  { status: 'Ausente', icon: UserX, selected: 'bg-rose-600 text-white hover:bg-rose-700 font-extrabold', label: 'Ausente' },
+  { status: 'A bordo', icon: Bus, selected: 'bg-amber-400 text-slate-950 hover:bg-amber-500 border-transparent font-extrabold', label: 'A bordo' },
+  { status: 'Entregado', icon: Check, selected: 'bg-emerald-600 text-white hover:bg-emerald-700 border-transparent font-extrabold', label: 'Entregado' },
+  { status: 'Ausente', icon: UserX, selected: 'bg-rose-600 text-white hover:bg-rose-700 border-transparent font-extrabold', label: 'Ausente' },
 ];
 
 export function DriverAttendance() {
