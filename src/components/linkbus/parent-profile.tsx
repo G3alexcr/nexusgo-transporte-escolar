@@ -53,7 +53,7 @@ export function ParentProfileView({ onOpenQr, onOpenContrato }: { onOpenQr?: () 
 
     setTimeout(() => {
       setSaving(false);
-      toast.success('¡Perfil de apoderado actualizado con éxito!', {
+      toast.success('¡Perfil de encargado actualizado con éxito!', {
         description: 'Tus datos y preferencias de notificación han sido guardados.',
       });
     }, 400);
@@ -96,11 +96,11 @@ export function ParentProfileView({ onOpenQr, onOpenContrato }: { onOpenQr?: () 
           <div className="min-w-0 flex-1">
             <div className="flex items-center gap-1.5">
               <h2 className="text-base font-extrabold text-white truncate">{nombre}</h2>
-              <span title="Apoderado Verificado">
+              <span title="Encargado Verificado">
                 <ShieldCheck className="h-4 w-4 text-emerald-400 shrink-0" />
               </span>
             </div>
-            <p className="text-xs text-amber-300 font-semibold truncate">Apoderado Titular · Nexus Go</p>
+            <p className="text-xs text-amber-300 font-semibold truncate">Encargado Titular · Nexus Go</p>
             <p className="text-[11px] text-slate-300 font-mono mt-0.5 truncate">Cédula: {cedula}</p>
           </div>
         </div>

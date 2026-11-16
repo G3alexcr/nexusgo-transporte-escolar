@@ -6,7 +6,7 @@ export const Route = createFileRoute('/admin/alumnos')({
   head: () =>
     pageHead(
       'Estudiantes y Contratos CTP',
-      'Padrón de estudiantes, verificación de contratos legales CTP y control de apoderados.'
+      'Padrón de estudiantes, verificación de contratos legales CTP y control de encargados.'
     ),
   component: () => <AdminDirectory section="alumnos" />,
 });

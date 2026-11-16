@@ -233,7 +233,7 @@ export function ManifiestoPasajerosModal({
                     <th className="px-3 py-2.5 w-10 text-center">N°</th>
                     <th className="px-3 py-2.5">Estudiante & Grado</th>
                     <th className="px-3 py-2.5">Cédula Menor / TIM</th>
-                    <th className="px-3 py-2.5">Apoderado Titular & Teléfono</th>
+                    <th className="px-3 py-2.5">Encargado Titular & Teléfono</th>
                     <th className="px-3 py-2.5">Parada Autorizada</th>
                     <th className="px-3 py-2.5 text-center">Estado CTP</th>
                   </tr>

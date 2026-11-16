@@ -306,7 +306,7 @@ export function DriverCollections({ onBack }: { onBack: () => void }) {
           </div>
 
           <p className="text-xs text-amber-900/80 dark:text-amber-300/80">
-            Los siguientes apoderados reportaron pagos mediante SINPE Móvil. Abre el comprobante, verifica que los fondos estén acreditados en tu cuenta bancaria y dale clic a <b>Aprobar Pago</b> para emitir el recibo digital oficial:
+            Los siguientes encargados reportaron pagos mediante SINPE Móvil. Abre el comprobante, verifica que los fondos estén acreditados en tu cuenta bancaria y dale clic a <b>Aprobar Pago</b> para emitir el recibo digital oficial:
           </p>
 
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 pt-1">
@@ -371,8 +371,8 @@ export function DriverCollections({ onBack }: { onBack: () => void }) {
         <div className="relative flex-1">
           <Search className="absolute left-3 top-3 h-4 w-4 text-muted-foreground" />
           <Input
-            aria-label="Buscar estudiante o apoderado"
-            placeholder="Buscar por estudiante, apoderado o colegio…"
+            aria-label="Buscar estudiante o encargado"
+            placeholder="Buscar por estudiante, encargado o colegio…"
             value={query}
             onChange={(e) => setQuery(e.target.value)}
             className="h-10 pl-9 text-xs rounded-xl"
@@ -425,7 +425,7 @@ export function DriverCollections({ onBack }: { onBack: () => void }) {
                 </div>
 
                 <p className="text-xs text-muted-foreground">
-                  Apoderado: <b className="text-foreground">{a.apoderado}</b> ({a.telefonoApoderado || '8841-9230'}) · {a.colegio} ({a.curso})
+                  Encargado: <b className="text-foreground">{a.apoderado}</b> ({a.telefonoApoderado || '8841-9230'}) · {a.colegio} ({a.curso})
                 </p>
 
                 {status === 'Pagado' && payment?.reciboNumero && (

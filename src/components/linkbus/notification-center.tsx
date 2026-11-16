@@ -3,13 +3,20 @@ import { Bell, Bus, CheckCircle2, AlertTriangle, CreditCard, Route, Check, Trash
 import { Button } from '@/components/ui/button';
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/ui/dialog';
 import { usePlatform } from './platform-provider';
-import type { PushNotification } from '@/lib/platform-state';
+import { useAuth } from './auth-provider';
+import { filterNotificationsForUser, type PushNotification } from '@/lib/platform-state';
 import { toast } from 'sonner';
 import { playNotificationSound, soundEffects } from '@/lib/sound-effects';
 
 export function NotificationBellButton({ onClick }: { onClick: () => void }) {
   const { state } = usePlatform();
-  const unreadCount = (state.notifications || []).filter((n) => !n.read).length;
+  const { profile } = useAuth();
+  const visibleNotifs = filterNotificationsForUser(
+    state.notifications || [],
+    profile?.role,
+    profile?.alumnoId || state.selectedAlumnoId,
+  );
+  const unreadCount = visibleNotifs.filter((n) => !n.read).length;
 
   return (
     <button
@@ -37,6 +44,7 @@ export function NotificationModal({
   onOpenChange: (open: boolean) => void;
 }) {
   const { state, dispatch } = usePlatform();
+  const { profile } = useAuth();
   const [filter, setFilter] = useState<'all' | 'unread' | 'gps' | 'attendance'>('all');
   const [pushPermission, setPushPermission] = useState<string>('default');
 
@@ -131,7 +139,13 @@ export function NotificationModal({
     });
   };
 
-  const notifications = (state.notifications || []).filter((n) => {
+  const visibleNotifications = filterNotificationsForUser(
+    state.notifications || [],
+    profile?.role,
+    profile?.alumnoId || state.selectedAlumnoId,
+  );
+
+  const notifications = visibleNotifications.filter((n) => {
     if (filter === 'unread') return !n.read;
     if (filter === 'gps') return n.type === 'gps' || n.type === 'route';
     if (filter === 'attendance') return n.type === 'attendance';

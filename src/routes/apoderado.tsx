@@ -47,11 +47,11 @@ import { Calendar } from '@/components/ui/calendar';
 import { Dialog, DialogContent, DialogTitle, DialogDescription, DialogHeader } from '@/components/ui/dialog';
 import { clp } from '@/lib/data';
 import { pageHead } from '@/lib/page-head';
-import type { AbsenceMode } from '@/lib/platform-state';
+import { filterNotificationsForUser, type AbsenceMode } from '@/lib/platform-state';
 import { playNotificationSound } from '@/lib/sound-effects';
 
 export const Route = createFileRoute('/apoderado')({
-  head: () => pageHead('Portal Apoderado', 'Seguimiento en vivo de la buseta, control de asistencia, mensualidades y expedientes de seguridad.'),
+  head: () => pageHead('Portal Encargado', 'Seguimiento en vivo de la buseta, control de asistencia, mensualidades y expedientes de seguridad.'),
   component: () => (
     <AuthGuard allowedRoles={['apoderado', 'admin', 'superadmin']}>
       <Parent />
@@ -149,7 +149,7 @@ function Parent() {
               )}
               <span className="flex h-2 w-2 rounded-full bg-emerald-500 animate-pulse" />
               <p className="text-xs font-bold uppercase tracking-wider text-muted-foreground">
-                {state.company} · Portal de Familias y Apoderados
+                {state.company} · Portal de Familias y Encargados
               </p>
             </div>
             <h1 className="text-2xl sm:text-3xl font-black text-foreground mt-1">
@@ -281,7 +281,7 @@ function Parent() {
                     size="sm"
                     onClick={() => {
                       const msg = encodeURIComponent(
-                        `Hola Don ${van.chofer.split(' ')[0]}, le saluda ${activeParent} (apoderado/a de ${child.nombre}). Le escribo respecto al recorrido de la buseta ${van.patente}.`
+                        `Hola Don ${van.chofer.split(' ')[0]}, le saluda ${activeParent} (encargado/a de ${child.nombre}). Le escribo respecto al recorrido de la buseta ${van.patente}.`
                       );
                       window.open(`https://wa.me/50688412390?text=${msg}`, '_blank');
                     }}
@@ -565,7 +565,7 @@ function Parent() {
                       <b className="text-foreground">{child.nombre}</b>
                     </div>
                     <div className="flex justify-between">
-                      <span>Apoderado titular:</span>
+                      <span>Encargado titular:</span>
                       <b className="text-foreground">{activeParent}</b>
                     </div>
                     <div className="flex justify-between">
@@ -757,7 +757,7 @@ function Parent() {
                 className="gap-1.5 font-bold text-xs rounded-xl cursor-pointer"
               >
                 <Bell className="h-3.5 w-3.5 text-amber-500" />
-                <span>Notificaciones Push ({state.notifications?.length || 0})</span>
+                <span>Notificaciones Push ({filterNotificationsForUser(state.notifications || [], 'apoderado', child?.id).length})</span>
               </Button>
             </div>
 
@@ -824,7 +824,7 @@ function Parent() {
             </DialogTitle>
           </DialogHeader>
           <p className="text-xs text-muted-foreground">
-            Escoge cualquiera de los estudiantes registrados para probar el portal del apoderado con su ruta, buseta asignada, chofer y estado de mensualidad:
+            Escoge cualquiera de los estudiantes registrados para probar el portal del encargado con su ruta, buseta asignada, chofer y estado de mensualidad:
           </p>
           <div className="space-y-2 py-2 max-h-[60vh] overflow-y-auto pr-1">
             {state.alumnos.map((a) => {
@@ -858,7 +858,7 @@ function Parent() {
                     <div className="min-w-0">
                       <p className="text-xs font-bold text-foreground truncate">{a.nombre}</p>
                       <p className="text-[11px] text-muted-foreground truncate">
-                        Apoderado: <b className="text-foreground">{a.apoderado}</b>
+                        Encargado: <b className="text-foreground">{a.apoderado}</b>
                       </p>
                       <p className="text-[10px] text-muted-foreground font-mono truncate">
                         {a.colegio} ({a.curso}) · Buseta {aVan?.patente || 'Costa Rica'}

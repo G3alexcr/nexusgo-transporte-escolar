@@ -31,7 +31,7 @@ const ROLE_LABELS: Record<UserRole, string> = {
   admin: "Administrador",
   chofer: "Chofer",
   asistente: "Asistente de Chofer",
-  apoderado: "Apoderado / Familia",
+  apoderado: "Encargado / Familia",
 };
 
 const ROLE_TONES: Record<UserRole, "ok" | "warn" | "info" | "bad"> = {
@@ -368,7 +368,7 @@ export function AdminUsuarios() {
         <ShieldCheck className="h-4 w-4 text-amber-600 shrink-0 mt-0.5" />
         <p>
           Cada cuenta registrada queda aislada a tu empresa (<b>{state.company}</b>). Puedes asignar roles estándar
-          (<b>Chofer</b>, <b>Asistente de Chofer</b>, <b>Apoderado</b>, <b>Administrador</b>) o crear{" "}
+          (<b>Chofer</b>, <b>Asistente de Chofer</b>, <b>Encargado</b>, <b>Administrador</b>) o crear{" "}
           <b>roles personalizados</b> según la estructura de tu operación.
         </p>
       </div>
@@ -524,7 +524,7 @@ export function AdminUsuarios() {
               >
                 <option value="chofer">Chofer (App ruta & GPS)</option>
                 <option value="asistente">Asistente de Chofer (Abordaje & lista)</option>
-                <option value="apoderado">Apoderado / Familia</option>
+                <option value="apoderado">Encargado / Familia</option>
                 <option value="admin">Administrador de Flota</option>
                 <option value="custom">+ Crear / asignar rol personalizado...</option>
               </select>
@@ -663,7 +663,7 @@ export function AdminUsuarios() {
               >
                 <option value="chofer">Chofer</option>
                 <option value="asistente">Asistente de Chofer</option>
-                <option value="apoderado">Apoderado / Familia</option>
+                <option value="apoderado">Encargado / Familia</option>
                 <option value="admin">Administrador de Flota</option>
                 <option value="custom">+ Rol personalizado...</option>
               </select>

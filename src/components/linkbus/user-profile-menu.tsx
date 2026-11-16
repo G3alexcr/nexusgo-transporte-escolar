@@ -14,6 +14,7 @@ import {
 import { ThemeToggle } from './theme-toggle';
 import { useAuth } from './auth-provider';
 import { usePlatform } from './platform-provider';
+import { filterNotificationsForUser } from '@/lib/platform-state';
 import { APP_VERSION } from '@/lib/app-version';
 import { toast } from 'sonner';
 
@@ -21,7 +22,7 @@ const ROLE_LABELS: Record<string, string> = {
   superadmin: 'SuperAdmin NexusEduCR',
   admin: 'Administrador de Flota',
   chofer: 'Chofer / Asistente',
-  apoderado: 'Padre / Apoderado',
+  apoderado: 'Padre / Encargado',
 };
 
 function getAvatarStorageKey(userId?: string | null, role?: string | null) {
@@ -229,10 +230,15 @@ export function UserProfileMenu() {
 
 export function UserUtilityBar({ darkBar = false }: { darkBar?: boolean }) {
   const { state, dispatch } = usePlatform();
+  const { profile } = useAuth();
   const [notifOpen, setNotifOpen] = useState(false);
   const bellRef = useRef<HTMLDivElement | null>(null);
 
-  const notifications = state.notifications || [];
+  const notifications = filterNotificationsForUser(
+    state.notifications || [],
+    profile?.role,
+    profile?.alumnoId || state.selectedAlumnoId,
+  );
   const unreadNotifications = notifications.filter((n) => !n.read);
   const unreadCount = unreadNotifications.length;
 

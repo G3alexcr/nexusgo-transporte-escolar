@@ -9,6 +9,7 @@ import { Download, FileText, Printer } from 'lucide-react';
 import { toast } from 'sonner';
 import { JuntaReportModal } from '@/components/linkbus/junta-report-modal';
 import { ManifiestoPasajerosModal } from '@/components/linkbus/manifiesto-pasajeros-modal';
+import { AdminGpsRoutesPanel } from '@/components/linkbus/admin-gps-routes';
 
 export const Route = createFileRoute('/admin/viajes')({
   validateSearch: (s: Record<string, unknown>) => ({ viaje: typeof s['viaje'] === 'string' ? s['viaje'] : 'v1' }),
@@ -142,6 +143,8 @@ function Trips() {
           </div>
         ))}
       </div>
+
+      <AdminGpsRoutesPanel />
 
       <JuntaReportModal open={reportOpen} onOpenChange={setReportOpen} defaultColegio={van?.colegio} />
       <ManifiestoPasajerosModal open={manifiestoOpen} onOpenChange={setManifiestoOpen} van={van} customAlumnos={students} />

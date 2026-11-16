@@ -1,6 +1,12 @@
 import { createFileRoute } from '@tanstack/react-router';
-import { useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { toast } from 'sonner';
+import {
+  createRouteGpsLog,
+  haversineMeters,
+  updateRouteGpsLogPoints,
+  type GpsRoutePoint,
+} from '@/lib/route-gps-logs';
 import {
   Bell,
   Home,
@@ -81,6 +87,32 @@ function Driver() {
   const driverAvatar = (activeDriver && DRIVER_AVATARS[activeDriver.id]) || DRIVER_AVATARS['c1'];
   const vanInspection = van ? state.inspections[van.patente] : undefined;
 
+  const gpsLogIdRef = useRef<string | null>(null);
+  const gpsPointsRef = useRef<GpsRoutePoint[]>([]);
+  const lastGpsFlushRef = useRef<number>(0);
+
+  useEffect(() => {
+    if (state.active && state.recordGpsRoutes && !gpsLogIdRef.current && van) {
+      gpsPointsRef.current = [];
+      lastGpsFlushRef.current = Date.now();
+      void createRouteGpsLog({
+        tenantId: state.currentTenantId,
+        vanId: van.id,
+        vanPatente: van.patente,
+        routeName: state.routeName || van.ruta || 'Recorrido escolar',
+        driverName: activeDriver?.nombre || van.chofer,
+      }).then((id) => {
+        if (id) gpsLogIdRef.current = id;
+      });
+    } else if ((!state.active || !state.recordGpsRoutes) && gpsLogIdRef.current) {
+      const closingId = gpsLogIdRef.current;
+      const finalPoints = [...gpsPointsRef.current];
+      gpsLogIdRef.current = null;
+      gpsPointsRef.current = [];
+      void updateRouteGpsLogPoints(closingId, finalPoints, new Date().toISOString());
+    }
+  }, [state.active, state.recordGpsRoutes, state.currentTenantId, state.routeName, van, activeDriver?.nombre]);
+
   const { status: gpsStatus } = useDriverGpsBroadcast({
     enabled: state.active,
     tenantId: state.currentTenantId,
@@ -88,6 +120,18 @@ function Driver() {
     onLocalLocation: (lat, lng) => {
       if (van?.id) {
         dispatch({ type: 'updateVanLocation', vanId: van.id, lat, lng });
+      }
+      if (state.active && state.recordGpsRoutes && gpsLogIdRef.current) {
+        const pts = gpsPointsRef.current;
+        const last = pts[pts.length - 1];
+        if (!last || haversineMeters(last.lat, last.lng, lat, lng) >= 15) {
+          pts.push({ lat, lng, t: new Date().toISOString() });
+        }
+        const now = Date.now();
+        if (now - lastGpsFlushRef.current >= 15000) {
+          lastGpsFlushRef.current = now;
+          void updateRouteGpsLogPoints(gpsLogIdRef.current, [...pts]);
+        }
       }
     },
   });
@@ -135,7 +179,7 @@ function Driver() {
       playNotificationSound('push');
     }
 
-    toast.success('Aviso enviado a los apoderados', { description: message });
+    toast.success('Aviso enviado a los encargados', { description: message });
   };
 
   const handleReportSos = (incidentText: string) => {
@@ -399,7 +443,7 @@ function Driver() {
               {/* Quick Broadcast Notifications to Parents */}
               <div className="rounded-2xl border bg-card p-4 shadow-sm space-y-2.5">
                 <span className="text-xs font-bold uppercase tracking-wider text-muted-foreground">
-                  Avisos Automáticos a los Apoderados
+                  Avisos Automáticos a los Encargados
                 </span>
 
                 <Button
@@ -537,7 +581,7 @@ function Driver() {
             <div className="border-b pb-3">
               <h2 className="text-xl font-black text-foreground">Avisos Rápidos a Familias</h2>
               <p className="text-xs text-muted-foreground">
-                Envía notificaciones con sonido push en tiempo real a los teléfonos de los apoderados de la ruta {van?.colegio}.
+                Envía notificaciones con sonido push en tiempo real a los teléfonos de los encargados de la ruta {van?.colegio}.
               </p>
             </div>
 
@@ -607,7 +651,7 @@ function Driver() {
             <div className="flex items-center justify-between border-b pb-3">
               <div>
                 <h2 className="text-xl font-black text-foreground">Agenda de Inasistencias</h2>
-                <p className="text-xs text-muted-foreground">Avisos notificados por los apoderados para la ruta {van?.colegio}</p>
+                <p className="text-xs text-muted-foreground">Avisos notificados por los encargados para la ruta {van?.colegio}</p>
               </div>
               <Button size="sm" variant="outline" onClick={() => setTab('perfil')} className="cursor-pointer text-xs">
                 Volver al Perfil

@@ -45,7 +45,7 @@ const ROLE_BADGES: Record<string, string> = {
   superadmin: 'SUPER ADMIN',
   admin: 'ADMIN FLOTA',
   chofer: 'CHOFER / ASISTENTE',
-  apoderado: 'APODERADO',
+  apoderado: 'ENCARGADO',
 };
 
 function getAvatarStorageKey(userId?: string | null, role?: string | null) {

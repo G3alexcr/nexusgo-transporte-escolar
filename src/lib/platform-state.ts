@@ -40,7 +40,19 @@ export type PushNotification = {
   time: string;
   type: "gps" | "attendance" | "route" | "payment" | "sos" | "contract";
   read: boolean;
+  alumnoId?: string | undefined;
 };
+
+export function filterNotificationsForUser(
+  notifications: PushNotification[],
+  role?: string | null,
+  alumnoId?: string | null,
+): PushNotification[] {
+  if (role === "apoderado" && alumnoId) {
+    return notifications.filter((n) => !n.alumnoId || n.alumnoId === alumnoId);
+  }
+  return notifications;
+}
 
 export type ParentProfile = {
   nombre: string;
@@ -132,6 +144,7 @@ export type PlatformState = {
   contracts: Record<string, StudentContract>;
   isOfflineMode: boolean;
   offlineQueue: OfflineSyncQueueItem[];
+  recordGpsRoutes?: boolean | undefined;
 };
 
 export const AUTHORIZED_PERSONS_DEFAULT: AuthorizedPerson[] = [
@@ -154,6 +167,7 @@ export const emptyPlatformState: PlatformState = {
   selectedAlumnoId: "",
   active: false,
   routeName: "",
+  recordGpsRoutes: false,
   attendance: {},
   absences: {},
   notices: [],
@@ -401,6 +415,7 @@ export type PlatformAction =
   | { type: "selectAlumno"; alumnoId: string }
   // Real-time GPS Telemetry (ephemeral, never persisted to DB)
   | { type: "updateVanLocation"; vanId: string; lat?: number | undefined; lng?: number | undefined; clear?: boolean | undefined }
+  | { type: "setRecordGpsRoutes"; enabled: boolean }
   // Remote Persistence Hydration
   | { type: "hydrateFromRemote"; state: Partial<PlatformState> };
 
@@ -426,6 +441,8 @@ export function platformReducer(state: PlatformState, action: PlatformAction): P
   switch (action.type) {
     case "setOfflineMode":
       return { ...state, isOfflineMode: action.enabled };
+    case "setRecordGpsRoutes":
+      return { ...state, recordGpsRoutes: action.enabled };
     case "queueOfflineAttendance": {
       const attendance = applyOfflineItemToAttendance(state.attendance, action.item);
       const filteredQueue = state.offlineQueue.filter(q => q.alumnoId !== action.item.alumnoId);
@@ -517,6 +534,7 @@ export function platformReducer(state: PlatformState, action: PlatformAction): P
           time: action.time,
           type: "attendance",
           read: false,
+          alumnoId: action.id,
         };
         notifications = [pushNotif, ...state.notifications];
       }

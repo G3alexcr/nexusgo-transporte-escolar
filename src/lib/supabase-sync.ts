@@ -190,6 +190,7 @@ export async function seedInitialDatabase(supabase: SupabaseClient, state: Platf
       state.notifications.map((n) => ({
         id: ensureUuid(n.id),
         tenant_id: activeTenantId,
+        alumno_id: n.alumnoId && isUuid(n.alumnoId) ? n.alumnoId : null,
         title: n.title,
         body: n.body,
         time: n.time,
@@ -397,6 +398,7 @@ export async function loadPlatformStateFromSupabase(
       time: r.time as string,
       type: r.type as PushNotification['type'],
       read: Boolean(r.read),
+      alumnoId: (r.alumno_id as string | null) ?? undefined,
     })),
     authorizedPersons: (authorizedRes.data ?? []).map((r) => ({
       id: r.id as string,
@@ -421,6 +423,7 @@ export async function loadPlatformStateFromSupabase(
     patch.company = s.company as string;
     patch.routeName = s.route_name as string;
     patch.active = Boolean(s.active);
+    patch.recordGpsRoutes = Boolean(s.record_gps_routes);
     if (s.driver_profile && Object.keys(s.driver_profile as object).length > 0) {
       patch.driverProfile = s.driver_profile as PlatformState['driverProfile'];
     }
@@ -451,6 +454,7 @@ export async function syncActionToSupabase(
         active: nextState.active,
         driver_profile: nextState.driverProfile,
         parent_profile: nextState.parentProfile,
+        record_gps_routes: Boolean(nextState.recordGpsRoutes),
         updated_at: new Date().toISOString(),
       },
       { onConflict: 'tenant_id' },
@@ -493,6 +497,7 @@ export async function syncActionToSupabase(
             {
               id: ensureUuid(latestAttNotif.id),
               tenant_id: tenantId,
+              alumno_id: latestAttNotif.alumnoId && isUuid(latestAttNotif.alumnoId) ? latestAttNotif.alumnoId : null,
               title: latestAttNotif.title,
               body: latestAttNotif.body,
               time: latestAttNotif.time,
@@ -529,6 +534,7 @@ export async function syncActionToSupabase(
             {
               id: ensureUuid(latestNotif.id),
               tenant_id: tenantId,
+              alumno_id: latestNotif.alumnoId && isUuid(latestNotif.alumnoId) ? latestNotif.alumnoId : null,
               title: latestNotif.title,
               body: latestNotif.body,
               time: latestNotif.time,
@@ -549,6 +555,7 @@ export async function syncActionToSupabase(
       case 'company':
       case 'driverProfile':
       case 'updateParentProfile':
+      case 'setRecordGpsRoutes':
         await syncSettings();
         return;
 

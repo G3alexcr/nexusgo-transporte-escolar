@@ -407,7 +407,7 @@ export function AdminDirectory({ section }: { section: 'choferes' | 'rutas' | 'c
   const handleSaveAlumno = (e: React.FormEvent) => {
     e.preventDefault();
     if (!alumnoForm.nombre.trim() || !alumnoForm.apoderado.trim()) {
-      toast.error('Completa el nombre del alumno y de su apoderado');
+      toast.error('Completa el nombre del alumno y de su encargado');
       return;
     }
 
@@ -588,7 +588,7 @@ export function AdminDirectory({ section }: { section: 'choferes' | 'rutas' | 'c
           </div>
 
           <div className="rounded-lg bg-amber-500/10 p-3 text-xs text-amber-800 dark:text-amber-300">
-            Los cambios se sincronizan en tiempo real con las aplicaciones de Chofer y Apoderado.
+            Los cambios se sincronizan en tiempo real con las aplicaciones de Chofer y Encargado.
           </div>
 
           <Button type="submit" className="bg-amber-400 font-bold text-slate-950 hover:bg-amber-500">
@@ -1040,7 +1040,7 @@ export function AdminDirectory({ section }: { section: 'choferes' | 'rutas' | 'c
               <p className="text-sm text-muted-foreground">Control mensual de mensualidades en Colones (₡ CRC)</p>
             </div>
             <div className="flex items-center gap-2">
-              <Button variant="outline" size="sm" onClick={() => exportToCsv('mensualidades_estudiantes_cr', ['Estudiante', 'Grado', 'Colegio', 'Apoderado', 'Direccion', 'Cuota CRC', 'Estado'], state.alumnos.map(a => [a.nombre, a.curso, a.colegio, a.apoderado, a.direccion, a.monto, a.pago]))} className="gap-1 font-semibold text-xs">
+              <Button variant="outline" size="sm" onClick={() => exportToCsv('mensualidades_estudiantes_cr', ['Estudiante', 'Grado', 'Colegio', 'Encargado', 'Direccion', 'Cuota CRC', 'Estado'], state.alumnos.map(a => [a.nombre, a.curso, a.colegio, a.apoderado, a.direccion, a.monto, a.pago]))} className="gap-1 font-semibold text-xs">
                 <Download className="h-3.5 w-3.5" />
                 <span>Exportar CSV</span>
               </Button>
@@ -1098,7 +1098,7 @@ export function AdminDirectory({ section }: { section: 'choferes' | 'rutas' | 'c
                 </span>
               </div>
               <p className="text-xs text-amber-900/80 dark:text-amber-300/80 mb-3 leading-relaxed">
-                Los siguientes apoderados reportaron pagos mediante SINPE Móvil. Abre el comprobante, verifica que los fondos estén acreditados en la cuenta bancaria de la empresa y dale clic a <b>Aprobar Pago</b> para emitir el recibo digital oficial:
+                Los siguientes encargados reportaron pagos mediante SINPE Móvil. Abre el comprobante, verifica que los fondos estén acreditados en la cuenta bancaria de la empresa y dale clic a <b>Aprobar Pago</b> para emitir el recibo digital oficial:
               </p>
 
               <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
@@ -1176,7 +1176,7 @@ export function AdminDirectory({ section }: { section: 'choferes' | 'rutas' | 'c
               <input
                 value={query}
                 onChange={(e) => setQuery(e.target.value)}
-                placeholder="Buscar por estudiante, apoderado o colegio…"
+                placeholder="Buscar por estudiante, encargado o colegio…"
                 className="w-full rounded-xl border bg-card pl-9 pr-3 py-2 text-xs font-medium focus:outline-none focus:ring-2 focus:ring-amber-400"
               />
             </div>
@@ -1189,7 +1189,7 @@ export function AdminDirectory({ section }: { section: 'choferes' | 'rutas' | 'c
                 <tr>
                   <th className="px-4 py-3">Estudiante</th>
                   <th className="px-4 py-3">Colegio & Grado</th>
-                  <th className="px-4 py-3">Apoderado / Encargado</th>
+                  <th className="px-4 py-3">Encargado</th>
                   <th className="px-4 py-3">Cuota Mensual</th>
                   <th className="px-4 py-3">Estado de Pago</th>
                   <th className="px-4 py-3">Contrato CTP</th>
@@ -1342,7 +1342,7 @@ export function AdminDirectory({ section }: { section: 'choferes' | 'rutas' | 'c
               </div>
               <h1 className="text-2xl font-extrabold tracking-tight mt-0.5">Padrón de Estudiantes y Contratos</h1>
               <p className="text-sm text-muted-foreground">
-                Control de contratos legales de transporte escolar (Decreto Ejecutivo N° 35249-MOPT), apoderados y asignaciones.
+                Control de contratos legales de transporte escolar (Decreto Ejecutivo N° 35249-MOPT), encargados y asignaciones.
               </p>
             </div>
             <div className="flex items-center gap-2">
@@ -1352,7 +1352,7 @@ export function AdminDirectory({ section }: { section: 'choferes' | 'rutas' | 'c
                 onClick={() =>
                   exportToCsv(
                     'padron_estudiantes_contratos_ctp',
-                    ['Estudiante', 'Grado', 'Colegio', 'Apoderado', 'Cédula', 'Teléfono', 'Dirección', 'Cuota CRC', 'Estado Contrato', 'Folio CTP', 'Fecha Firma'],
+                    ['Estudiante', 'Grado', 'Colegio', 'Encargado', 'Cédula', 'Teléfono', 'Dirección', 'Cuota CRC', 'Estado Contrato', 'Folio CTP', 'Fecha Firma'],
                     state.alumnos.map((a) => {
                       const c = state.contracts[a.id];
                       return [
@@ -1421,7 +1421,7 @@ export function AdminDirectory({ section }: { section: 'choferes' | 'rutas' | 'c
                 {state.alumnos.filter((a) => !state.contracts[a.id]?.signed).length}
               </p>
               <p className="text-[10px] text-amber-700 dark:text-amber-400 mt-0.5 font-medium">
-                Firma requerida de apoderados
+                Firma requerida de encargados
               </p>
             </div>
 
@@ -1479,7 +1479,7 @@ export function AdminDirectory({ section }: { section: 'choferes' | 'rutas' | 'c
               <input
                 value={query}
                 onChange={(e) => setQuery(e.target.value)}
-                placeholder="Buscar por estudiante, colegio o apoderado…"
+                placeholder="Buscar por estudiante, colegio o encargado…"
                 className="w-full rounded-xl border bg-card pl-9 pr-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-amber-400"
               />
             </div>
@@ -1492,7 +1492,7 @@ export function AdminDirectory({ section }: { section: 'choferes' | 'rutas' | 'c
                 <tr>
                   <th className="px-4 py-3">Estudiante</th>
                   <th className="px-4 py-3">Colegio Asignado</th>
-                  <th className="px-4 py-3">Apoderado / Encargado</th>
+                  <th className="px-4 py-3">Encargado</th>
                   <th className="px-4 py-3">Cuota Mensual</th>
                   <th className="px-4 py-3">Contrato Legal CTP</th>
                   <th className="px-4 py-3 text-right">Acciones</th>
@@ -1590,7 +1590,7 @@ export function AdminDirectory({ section }: { section: 'choferes' | 'rutas' | 'c
                                 <span>Pendiente de Firma</span>
                               </div>
                               <p className="text-[10px] text-muted-foreground">
-                                Requiere firma del apoderado
+                                Requiere firma del encargado
                               </p>
                               <div className="flex items-center gap-1">
                                 <Button
@@ -2184,7 +2184,7 @@ export function AdminDirectory({ section }: { section: 'choferes' | 'rutas' | 'c
               </div>
             </div>
             <div>
-              <label className="text-xs font-bold text-foreground">Apoderado / Encargado</label>
+              <label className="text-xs font-bold text-foreground">Encargado</label>
               <input
                 required
                 value={alumnoForm.apoderado}

@@ -138,7 +138,7 @@ export function DriverAttendance() {
                 type="button"
                 onClick={() => handleSendWhatsApp(a)}
                 className="flex items-center justify-center gap-1.5 py-2 px-1 text-xs font-bold text-foreground hover:bg-background rounded-lg transition-all"
-                title="Avisar por WhatsApp al apoderado"
+                title="Avisar por WhatsApp al encargado"
               >
                 <MessageCircle className="h-3.5 w-3.5 text-emerald-500" />
                 <span className="text-[11px]">WhatsApp</span>

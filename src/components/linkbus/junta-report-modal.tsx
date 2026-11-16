@@ -327,7 +327,7 @@ export function JuntaReportModal({ open, onOpenChange, defaultColegio }: JuntaRe
                     <th className="p-2 text-center">N°</th>
                     <th className="p-2">Estudiante</th>
                     <th className="p-2">Grado / Sección</th>
-                    <th className="p-2">Apoderado Titular & Contacto</th>
+                    <th className="p-2">Encargado Titular & Contacto</th>
                     <th className="p-2">Parada Autorizada</th>
                     <th className="p-2 text-center">Contrato Digital CTP</th>
                     <th className="p-2 text-right">Asistencia Mensual</th>

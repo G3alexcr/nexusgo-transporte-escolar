@@ -149,7 +149,7 @@ export function ExecutiveReportModal({
                     <th className="p-2">Punto de Parada</th>
                     <th className="p-2 text-center">Subida</th>
                     <th className="p-2 text-center">Bajada</th>
-                    <th className="p-2">Apoderado / Contacto</th>
+                    <th className="p-2">Encargado / Contacto</th>
                     <th className="p-2 text-right">Estado</th>
                   </tr>
                 </thead>

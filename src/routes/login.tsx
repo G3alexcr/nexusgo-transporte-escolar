@@ -291,7 +291,7 @@ function LoginPage() {
                     <SelectValue />
                   </SelectTrigger>
                   <SelectContent>
-                    <SelectItem value="apoderado">Padre / Apoderado</SelectItem>
+                    <SelectItem value="apoderado">Padre / Encargado</SelectItem>
                     <SelectItem value="chofer">Chofer / Asistente</SelectItem>
                     <SelectItem value="empresa">Empresa de Transporte</SelectItem>
                   </SelectContent>

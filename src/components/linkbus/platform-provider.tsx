@@ -140,6 +140,11 @@ export function PlatformProvider({ children }: { children: ReactNode }) {
           const row = payload.new as Record<string, unknown>;
           const id = String(row["id"] ?? "");
           if (!id || stateRef.current.notifications.some((n) => n.id === id)) return;
+          const alumnoId = (row["alumno_id"] as string | null) ?? undefined;
+          if (profile?.role === "apoderado" && alumnoId) {
+            const targetAlumnoId = profile.alumnoId || stateRef.current.selectedAlumnoId;
+            if (!targetAlumnoId || alumnoId !== targetAlumnoId) return;
+          }
           const notif: PushNotification = {
             id,
             title: String(row["title"] ?? "Aviso Nexus Go"),
@@ -147,8 +152,12 @@ export function PlatformProvider({ children }: { children: ReactNode }) {
             time: String(row["time"] ?? ""),
             type: (row["type"] as PushNotification["type"]) ?? "route",
             read: Boolean(row["read"]),
+            alumnoId,
           };
           rawDispatch({ type: "addNotification", notification: notif });
+          if (notif.type === "attendance" && (profile?.role === "chofer" || profile?.role === "asistente")) {
+            return;
+          }
           playNotificationSound(notif.type === "alert" ? "sos_alert" : "push");
           toast.info(notif.title, { description: notif.body });
           const targetUrl = profile?.role === "chofer" || profile?.role === "asistente" ? "/chofer" : "/apoderado";
@@ -210,7 +219,7 @@ export function PlatformProvider({ children }: { children: ReactNode }) {
     return () => {
       void supabase.removeChannel(channel);
     };
-  }, [session, targetTenantId, profile?.role]);
+  }, [session, targetTenantId, profile?.role, profile?.alumnoId]);
 
   const dispatch: Dispatch<PlatformAction> = useCallback((action) => {
     const nextState = platformReducer(stateRef.current, action);

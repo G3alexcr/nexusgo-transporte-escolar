@@ -1,5 +1,6 @@
 import { describe, expect, it } from 'vitest';
-import { initialPlatformState, platformReducer } from '@/lib/platform-state';
+import { filterNotificationsForUser, initialPlatformState, platformReducer } from '@/lib/platform-state';
+import { haversineMeters } from '@/lib/route-gps-logs';
 describe('Nexus Go mock flows',()=>{
  for(const role of ['Chofer / Conductor','Asistente de Buseta'] as const)it(`selects operational role ${role}`,()=>{expect(platformReducer(initialPlatformState,{type:'driverProfile',role,mode:'Empresa de transporte'}).driverProfile.role).toBe(role)});
  it('allows an independent conductor to register a monthly payment',()=>{const state=platformReducer(initialPlatformState,{type:'driverProfile',role:'Chofer / Conductor',mode:'Chofer Independiente'});const result=platformReducer(state,{type:'payment',id:'a2'});expect(result.payments['a2']?.status).toBe('Pagado');expect(result.payments['a4']?.status).toBe('Atrasado')});
@@ -145,5 +146,34 @@ describe('Nexus Go mock flows',()=>{
     });
     expect(afterRemote.offlineQueue).toHaveLength(1);
     expect(afterRemote.attendance["a1"]?.status).toBe("Entregado");
+  });
+
+  it("tags attendance notifications with alumnoId and filters them per encargado", () => {
+    const started = platformReducer(initialPlatformState, { type: "start", name: "Mañana Norte" });
+    const afterA6 = platformReducer(started, { type: "attendance", id: "a6", status: "A bordo", time: "07:35" });
+    const afterA1 = platformReducer(afterA6, { type: "attendance", id: "a1", status: "Entregado", time: "07:45" });
+
+    expect(afterA1.notifications[0]?.alumnoId).toBe("a1");
+    expect(afterA1.notifications[1]?.alumnoId).toBe("a6");
+
+    const forA1 = filterNotificationsForUser(afterA1.notifications, "apoderado", "a1");
+    expect(forA1.some((n) => n.alumnoId === "a1")).toBe(true);
+    expect(forA1.some((n) => n.alumnoId === "a6")).toBe(false);
+
+    const forAdmin = filterNotificationsForUser(afterA1.notifications, "admin", null);
+    expect(forAdmin.some((n) => n.alumnoId === "a1")).toBe(true);
+    expect(forAdmin.some((n) => n.alumnoId === "a6")).toBe(true);
+  });
+
+  it("toggles recordGpsRoutes and computes haversine distance for GPS filtering", () => {
+    expect(Boolean(initialPlatformState.recordGpsRoutes)).toBe(false);
+    const enabled = platformReducer(initialPlatformState, { type: "setRecordGpsRoutes", enabled: true });
+    expect(enabled.recordGpsRoutes).toBe(true);
+
+    const samePoint = haversineMeters(9.9333, -84.0833, 9.9333, -84.0833);
+    expect(samePoint).toBe(0);
+
+    const moved = haversineMeters(9.9333, -84.0833, 9.9343, -84.0833);
+    expect(moved).toBeGreaterThan(100);
   });
 });

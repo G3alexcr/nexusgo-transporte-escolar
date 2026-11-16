@@ -144,7 +144,7 @@ export function ContratoTransporteModal({ open, onOpenChange, alumno, van }: Con
       return;
     }
     if (!cedulaInput.trim()) {
-      toast.error('Por favor indique el número de cédula del apoderado titular.');
+      toast.error('Por favor indique el número de cédula del encargado titular.');
       return;
     }
 
@@ -248,7 +248,7 @@ export function ContratoTransporteModal({ open, onOpenChange, alumno, van }: Con
                 <p className="text-[11px] opacity-90">
                   {isSigned
                     ? `Suscrito por ${contract?.signedBy} el ${contract?.signedAt} · Folio ${contract?.folioDigital}`
-                    : 'Requiere la aceptación y firma del apoderado legal para iniciar el ciclo lectivo.'}
+                    : 'Requiere la aceptación y firma del encargado legal para iniciar el ciclo lectivo.'}
                 </p>
               </div>
             </div>
@@ -279,7 +279,7 @@ export function ContratoTransporteModal({ open, onOpenChange, alumno, van }: Con
             {/* Student & Guardian Box */}
             <div className="rounded-xl border bg-muted/30 p-3 space-y-1.5">
               <span className="text-[10px] font-bold uppercase tracking-wider text-muted-foreground flex items-center gap-1">
-                <User className="h-3 w-3 text-sky-500" /> Estudiante & Apoderado
+                <User className="h-3 w-3 text-sky-500" /> Estudiante & Encargado
               </span>
               <p className="font-extrabold text-foreground">
                 {alumno.nombre} ({alumno.curso})
@@ -337,7 +337,7 @@ export function ContratoTransporteModal({ open, onOpenChange, alumno, van }: Con
               <div className="p-2 rounded-lg bg-muted/40">
                 <p className="font-bold text-foreground">QUINTA: Retiro y Entrega de Menores</p>
                 <p className="text-muted-foreground mt-0.5">
-                  El estudiante únicamente será entregado al apoderado titular o a las personas formalmente registradas en el módulo de Personas Autorizadas de la aplicación Nexus Go con cédula en mano.
+                  El estudiante únicamente será entregado al encargado titular o a las personas formalmente registradas en el módulo de Personas Autorizadas de la aplicación Nexus Go con cédula en mano.
                 </p>
               </div>
 
@@ -438,7 +438,7 @@ export function ContratoTransporteModal({ open, onOpenChange, alumno, van }: Con
               {/* Identification inputs */}
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-2.5">
                 <div className="space-y-1">
-                  <Label className="text-[11px] font-bold">Nombre Completo del Apoderado</Label>
+                  <Label className="text-[11px] font-bold">Nombre Completo del Encargado</Label>
                   <Input
                     value={apoderadoInput}
                     onChange={(e) => setApoderadoInput(e.target.value)}
@@ -506,7 +506,7 @@ export function ContratoTransporteModal({ open, onOpenChange, alumno, van }: Con
                   htmlFor="accept-terms"
                   className="text-xs font-medium text-foreground leading-snug cursor-pointer select-none"
                 >
-                  Declaro bajo fe de juramento que soy el apoderado legal de <b>{alumno.nombre}</b>, acepto expresamente todas las cláusulas de prestación del servicio de transporte escolar 2026, normas de seguridad y condiciones de pago.
+                  Declaro bajo fe de juramento que soy el encargado legal de <b>{alumno.nombre}</b>, acepto expresamente todas las cláusulas de prestación del servicio de transporte escolar 2026, normas de seguridad y condiciones de pago.
                 </label>
               </div>
 

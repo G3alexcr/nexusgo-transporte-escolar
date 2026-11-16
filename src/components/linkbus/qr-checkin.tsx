@@ -123,7 +123,7 @@ export function StudentCardModal({
 
           <div className="grid grid-cols-2 gap-1.5 text-xs">
             <div className="rounded-lg border bg-muted/20 p-1.5">
-              <p className="text-[8px] font-bold text-muted-foreground uppercase">Apoderado</p>
+              <p className="text-[8px] font-bold text-muted-foreground uppercase">Encargado</p>
               <p className="font-bold text-foreground text-[10px] truncate mt-0.5">{student.apoderado}</p>
               <p className="text-[9px] font-mono text-amber-600 dark:text-amber-400 mt-0.5">{student.telefonoApoderado || '8841-9230'}</p>
             </div>

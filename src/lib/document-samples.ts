@@ -293,7 +293,7 @@ export function generateSinpeVoucherSvg(
       
       <line x1="24" y1="90" x2="396" y2="90" stroke="#e2e8f0" stroke-width="1"/>
       
-      <text x="24" y="115" fill="#64748b" font-family="sans-serif" font-size="10.5" font-weight="bold">PERSONA QUE PAGA (APODERADO):</text>
+      <text x="24" y="115" fill="#64748b" font-family="sans-serif" font-size="10.5" font-weight="bold">PERSONA QUE PAGA (ENCARGADO):</text>
       <text x="24" y="135" fill="#0f172a" font-family="sans-serif" font-size="13" font-weight="700">${emisor}</text>
       
       <line x1="24" y1="155" x2="396" y2="155" stroke="#e2e8f0" stroke-width="1"/>
@@ -377,7 +377,7 @@ export function generateDigitalReceiptSvg(
 
       <rect x="0" y="148" width="470" height="1" fill="#e2e8f0"/>
 
-      <text x="0" y="175" fill="#64748b" font-family="sans-serif" font-size="10.5" font-weight="bold">APODERADO / RESPONSABLE QUE PAGA:</text>
+      <text x="0" y="175" fill="#64748b" font-family="sans-serif" font-size="10.5" font-weight="bold">ENCARGADO / RESPONSABLE QUE PAGA:</text>
       <text x="0" y="195" fill="#0f172a" font-family="sans-serif" font-size="14" font-weight="700">${apoderado}</text>
 
       <rect x="0" y="210" width="470" height="1" fill="#e2e8f0"/>
@@ -567,7 +567,7 @@ export function generateStudentContractSvg(
         <text x="14" y="92" fill="#15803d" font-family="sans-serif" font-size="9.5" font-weight="bold">✓ Póliza Colectiva INS & RTV Dekra Al Día</text>
 
         <!-- Column 2: Estudiante & Apoderado -->
-        <text x="300" y="22" fill="#64748b" font-family="sans-serif" font-size="9" font-weight="bold">2. APODERADO(A) & BENEFICIARIO:</text>
+        <text x="300" y="22" fill="#64748b" font-family="sans-serif" font-size="9" font-weight="bold">2. ENCARGADO(A) & BENEFICIARIO:</text>
         <text x="300" y="40" fill="#0f172a" font-family="sans-serif" font-size="12" font-weight="bold">${apoderadoNombre}</text>
         <text x="300" y="56" fill="#475569" font-family="monospace" font-size="10">Cédula Identidad: ${cedulaApoderado}</text>
         <text x="300" y="74" fill="#0f172a" font-family="sans-serif" font-size="11" font-weight="bold">Estudiante: ${alumnoNombre}</text>
@@ -601,7 +601,7 @@ export function generateStudentContractSvg(
         <!-- Clause 5 -->
         <rect x="0" y="242" width="560" height="52" fill="#ffffff" stroke="#e2e8f0" rx="6"/>
         <text x="12" y="260" fill="#0f172a" font-family="sans-serif" font-size="10" font-weight="bold">QUINTA: Protocolo Estricto de Retiro y Entrega del Menor</text>
-        <text x="12" y="276" fill="#475569" font-family="sans-serif" font-size="9">El estudiante solo se entregará al apoderado titular o a los autorizados registrados en Nexus Go. Nadie sin autorización previa podrá recibir al alumno.</text>
+        <text x="12" y="276" fill="#475569" font-family="sans-serif" font-size="9">El estudiante solo se entregará al encargado titular o a los autorizados registrados en Nexus Go. Nadie sin autorización previa podrá recibir al alumno.</text>
 
         <!-- Clause 6 -->
         <rect x="0" y="300" width="560" height="52" fill="#ffffff" stroke="#e2e8f0" rx="6"/>
@@ -614,7 +614,7 @@ export function generateStudentContractSvg(
         <rect width="560" height="150" fill="#f8fafc" stroke="#cbd5e1" rx="8"/>
         
         <!-- Left: Signature Box -->
-        <text x="16" y="22" fill="#64748b" font-family="sans-serif" font-size="9.5" font-weight="bold">FIRMA Y ACEPTACIÓN DIGITAL DEL APODERADO(A):</text>
+        <text x="16" y="22" fill="#64748b" font-family="sans-serif" font-size="9.5" font-weight="bold">FIRMA Y ACEPTACIÓN DIGITAL DEL ENCARGADO(A):</text>
         <rect x="16" y="30" width="280" height="80" fill="#ffffff" stroke="#94a3b8" stroke-dasharray="3 3" rx="6"/>
         
         ${signatureDataUrl ? `
@@ -735,7 +735,7 @@ export function generatePassengerManifestSvg(
           <text x="12" y="17" fill="#ffffff" font-family="sans-serif" font-size="9.5" font-weight="bold">N°</text>
           <text x="40" y="17" fill="#ffffff" font-family="sans-serif" font-size="9.5" font-weight="bold">ESTUDIANTE / GRADO</text>
           <text x="230" y="17" fill="#ffffff" font-family="sans-serif" font-size="9.5" font-weight="bold">ID / TIM MENOR</text>
-          <text x="330" y="17" fill="#ffffff" font-family="sans-serif" font-size="9.5" font-weight="bold">APODERADO TITULAR & TEL</text>
+          <text x="330" y="17" fill="#ffffff" font-family="sans-serif" font-size="9.5" font-weight="bold">ENCARGADO TITULAR & TEL</text>
           <text x="510" y="17" fill="#ffffff" font-family="sans-serif" font-size="9.5" font-weight="bold">PARADA AUTORIZADA</text>
           <text x="670" y="17" fill="#ffffff" font-family="sans-serif" font-size="9.5" font-weight="bold" text-anchor="end">ESTADO</text>
         </g>

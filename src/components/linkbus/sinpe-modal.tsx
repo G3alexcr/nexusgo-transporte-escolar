@@ -413,7 +413,7 @@ export function SinpeComprobanteModal({
                   Comprobante en Espera de Verificación
                 </p>
                 <p className="text-muted-foreground">
-                  El apoderado reportó una transferencia SINPE por <b>₡{monto.toLocaleString('es-CR')}</b> desde <b>{banco}</b> el {fechaReporte}.
+                  El encargado reportó una transferencia SINPE por <b>₡{monto.toLocaleString('es-CR')}</b> desde <b>{banco}</b> el {fechaReporte}.
                   {isApprover
                     ? ' Revisa el número de referencia y valida los fondos en tu cuenta bancaria antes de aprobar.'
                     : ' El transportista está validando el depósito en su cuenta.'}
@@ -465,7 +465,7 @@ export function SinpeComprobanteModal({
               <p className="font-extrabold text-foreground">₡{monto.toLocaleString('es-CR')}</p>
             </div>
             <div>
-              <span className="text-muted-foreground text-[10px] uppercase font-bold">Apoderado:</span>
+              <span className="text-muted-foreground text-[10px] uppercase font-bold">Encargado:</span>
               <p className="font-bold text-foreground truncate">{alumno.apoderado}</p>
             </div>
           </div>
@@ -485,7 +485,7 @@ export function SinpeComprobanteModal({
           {rejectPrompt && isApprover && (
             <div className="rounded-xl border border-rose-400/50 bg-rose-50 dark:bg-rose-950/30 p-3.5 space-y-2 text-xs">
               <p className="font-extrabold text-rose-800 dark:text-rose-300">
-                Motivo de Rechazo u Observación para el Apoderado
+                Motivo de Rechazo u Observación para el Encargado
               </p>
               <Input
                 value={rejectReason}
